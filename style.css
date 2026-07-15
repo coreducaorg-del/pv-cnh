@@ -198,11 +198,11 @@ ul {
     padding-bottom: 24px;
   }
   #hero h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     line-height: 1.15;
   }
   #hero .hero-mockup-img {
-    width: 55%;
+    width: 62%;
     margin-top: 16px;
   }
   #hero .lede {
@@ -217,7 +217,7 @@ ul {
     padding: 2px 0 2px 26px;
   }
   #hero .btn-primary {
-    margin-top: 20px;
+    margin-top: 28px;
   }
 }
 
