@@ -461,10 +461,17 @@
   // checkout). Usa o Lenis (já usado na página) quando disponível, pra manter
   // a mesma suavidade do resto do scroll; cai pro scrollIntoView nativo como
   // fallback caso o Lenis não tenha carregado por algum motivo.
+  //
+  // Vinculado por ID explícito (#cta-hero, #cta-faq) — de propósito, NÃO por
+  // classe/atributo compartilhado — pra nunca correr o risco de também
+  // capturar o botão real de checkout (#cta-checkout), que precisa manter o
+  // comportamento padrão do link (href pra Hubla, target="_blank").
   // ==========================================================================
-  document.querySelectorAll('[data-scroll-to]').forEach(function (link) {
+  ['cta-hero', 'cta-faq'].forEach(function (id) {
+    var link = document.getElementById(id);
+    if (!link) return;
     link.addEventListener('click', function (event) {
-      var target = document.querySelector(link.getAttribute('data-scroll-to'));
+      var target = document.getElementById('preco');
       if (!target) return;
       event.preventDefault();
       if (window.lenis && typeof window.lenis.scrollTo === 'function') {
