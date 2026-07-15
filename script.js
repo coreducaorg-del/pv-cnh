@@ -259,6 +259,17 @@
       applyTransform(baseTranslateForPos(trackPos), false);
     });
 
+    // o CSS completo (style.css) carrega de forma assíncrona (preload+swap,
+    // pra não bloquear a primeira pintura) — se essa medida inicial rodar
+    // antes dele aplicar, o viewport pode ainda não ter a largura final e
+    // os slides ficam com 0px "congelado" no inline style. Remedir no
+    // window.load (depois que todo recurso, incluindo o CSS, carregou)
+    // corrige isso sem precisar de um resize manual.
+    window.addEventListener('load', function () {
+      measure();
+      applyTransform(baseTranslateForPos(trackPos), false);
+    });
+
     measure();
     applyTransform(baseTranslateForPos(trackPos), false);
     renderActiveStates();
@@ -279,6 +290,8 @@
 
     var playBtn = container.querySelector('.panda-play-btn');
     if (playBtn) playBtn.remove();
+    var thumb = container.querySelector('picture');
+    if (thumb) thumb.remove();
 
     var iframe = document.createElement('iframe');
     iframe.id = playerId;
