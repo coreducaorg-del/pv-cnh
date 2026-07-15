@@ -1,0 +1,777 @@
+/* ==========================================================================
+   Coreano na Hora — estilo visual aplicado
+   Paleta/tipografia/espaçamentos com base na referência
+   reidocoreano.com.br/coreano-na-hora-v2
+   ========================================================================== */
+
+:root {
+  --primary: #003478;
+  --primary-dark: #013877;
+  --primary-darker: #003066;
+  --navy-deepest: #0B1F3A;
+  --accent-blue: #4A7FD9;
+  --gradient-end: #1E5BB8;
+  --danger: #C60C30;
+  --background: #FFFFFF;
+  --background-alt: #FCFCFC;
+  --text: #333333;
+  --text-heading: #0A0A0A;
+  --text-on-dark: #FFFFFF;
+
+  --font-family: 'Plus Jakarta Sans', 'Satoshi', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --radius-button: 64px;
+  --radius-card: 16px;
+  --radius-faq: 10px;
+
+  --container-max: 560px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--background);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  margin: 0 0 16px;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 1.4375rem;
+  line-height: 1.2;
+  color: var(--text-heading);
+  letter-spacing: -0.01em;
+}
+.highlight-blue {
+  color: var(--primary);
+}
+
+h2 {
+  font-size: 1.625rem;
+  color: var(--primary);
+}
+
+h3 {
+  font-size: 1.25rem;
+  color: var(--primary);
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+ul {
+  margin: 0 0 16px;
+  padding-left: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section {
+  padding: 56px 0;
+  border-bottom: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.lede {
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.checklist {
+  list-style: none;
+  padding: 0;
+}
+.checklist li {
+  position: relative;
+  padding: 6px 0 6px 30px;
+}
+.checklist li::before {
+  content: "\2705";
+  position: absolute;
+  left: 0;
+  top: 6px;
+}
+
+/* ---------- Barra de urgência (fixa no topo da página) ---------- */
+.urgency-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--danger);
+  color: var(--text-on-dark);
+  text-align: center;
+  padding: 8px 16px;
+}
+.urgency-bar p {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.urgency-bar [data-urgency-timer] {
+  display: inline-block;
+  margin-left: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #7A0A22;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  border-radius: 7px;
+  padding: 4px 10px;
+  line-height: 1;
+}
+
+.hero-mockup-img {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1402 / 1122;
+  margin: 24px auto 0;
+  object-fit: contain;
+}
+
+/* ---------- Ritmo vertical exclusivo do hero (não afeta outras seções) ---------- */
+#hero.section {
+  padding-bottom: 40px;
+}
+#hero h1 {
+  margin-bottom: 0;
+}
+#hero .lede {
+  margin: 24px 0 0;
+}
+#hero .checklist {
+  margin: 16px 0 0;
+}
+#hero .checklist li {
+  padding: 4px 0 4px 30px;
+}
+#hero .btn-primary {
+  margin-top: 32px;
+}
+
+/* ---------- Botões ---------- */
+.btn-primary {
+  display: inline-block;
+  font-family: var(--font-family);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-on-dark);
+  text-decoration: none;
+  text-align: center;
+  padding: 22px 30px;
+  border: none;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  width: 100%;
+  background-image: radial-gradient(38.67% 91.17% at 50% 8.83%, var(--primary) 0%, var(--gradient-end) 100%);
+  box-shadow:
+    rgba(0, 52, 120, 0.5) 0px 0px 20px 0px,
+    rgba(30, 91, 184, 0.4) 0px 0px 40px 0px,
+    rgba(0, 52, 120, 0.25) 0px 10px 25px 0px;
+  transition: 0.5s;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+/* ---------- Depoimentos / carrossel ---------- */
+#depoimentos {
+  background: var(--background-alt);
+}
+
+.testimonial-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 52px;
+}
+
+.testimonial-viewport {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.testimonial-track {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: max-content;
+  will-change: transform;
+  transition: transform 0.3s ease;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+.testimonial-track:active {
+  cursor: grabbing;
+}
+
+.testimonial-slide {
+  flex: 0 0 auto;
+  aspect-ratio: 9 / 16;
+  background: var(--background);
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 25px rgba(0, 52, 120, 0.12);
+  overflow: hidden;
+  position: relative;
+  opacity: 0.45;
+  transform: scale(0.9);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.testimonial-slide[data-active="true"] {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.testimonial-video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 340 / 604;
+  background: #000;
+}
+.testimonial-video-embed iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.testimonial-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* transparente: só existe pra capturar o gesto de arrastar antes que o
+     iframe (que tem seu próprio contexto de eventos) o intercepte. */
+  background: transparent;
+  pointer-events: none;
+}
+.testimonial-slide[data-active="true"] .testimonial-video-overlay {
+  pointer-events: auto;
+}
+
+.testimonial-print-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--background);
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  background: var(--background);
+  border: 1px solid rgba(0, 52, 120, 0.15);
+  color: var(--primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 52, 120, 0.15);
+}
+.carousel-arrow--prev {
+  left: 0;
+}
+.carousel-arrow--next {
+  right: 0;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  width: 100%;
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 52, 120, 0.2);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.carousel-dot[data-active="true"] {
+  background: var(--primary);
+}
+
+/* Telas muito estreitas: reduz o espaço reservado pras setas e o gap entre
+   slides, senão o "peek" (prévia do slide anterior/próximo) fica fino
+   demais ou desaparece. */
+@media (max-width: 400px) {
+  .testimonial-carousel {
+    padding: 0 34px;
+  }
+  .testimonial-track {
+    gap: 10px;
+  }
+  .carousel-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8125rem;
+  }
+}
+
+/* ---------- Grids de cards (entregáveis) ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: var(--primary-darker);
+  color: var(--text-on-dark);
+  border-radius: var(--radius-card);
+  padding: 28px;
+}
+
+/* ---------- Seção #entregaveis: fundo escuro (mesmo tom do #bonus) ---------- */
+#entregaveis {
+  background: var(--primary-dark);
+}
+#entregaveis h2 {
+  color: var(--text-on-dark);
+}
+#entregaveis .card {
+  background: var(--gradient-end);
+}
+#entregaveis .card-media {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.card h3 {
+  color: var(--text-on-dark);
+}
+.card ul {
+  padding-left: 20px;
+}
+.card li {
+  margin-bottom: 6px;
+}
+
+.two-col-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  column-gap: 16px;
+}
+
+.card-icon {
+  font-size: 1.75rem;
+  margin-bottom: 12px;
+}
+
+/* ---------- Cards com imagem real (entregáveis) ----------
+   Layout em linha: caixa de imagem de tamanho fixo (igual nos 3 cards) à
+   esquerda, bloco de texto à direita, altura mínima igual entre os cards. */
+.card--media {
+  --media-w: 140px;
+  --media-h: 180px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  min-height: 228px;
+}
+
+.card-media {
+  flex: 0 0 auto;
+  width: var(--media-w);
+  height: var(--media-h);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--background-alt);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+}
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+}
+.card-body .card-icon {
+  margin-bottom: 8px;
+}
+.card-body h3 {
+  margin-bottom: 8px;
+  font-size: 1.125rem;
+}
+.card-body ul {
+  margin-bottom: 0;
+}
+
+@media (max-width: 400px) {
+  .card--media {
+    --media-w: 96px;
+    --media-h: 128px;
+    padding: 16px;
+    gap: 14px;
+    min-height: 252px;
+  }
+}
+
+/* Telas extremamente estreitas: a coluna de texto ao lado da imagem fica
+   apertada demais e o texto quebra em muitas linhas, desequilibrando a
+   altura dos cards. Nesse caso extremo, empilha (imagem em cima, texto
+   embaixo) em vez de manter lado a lado. */
+@media (max-width: 359px) {
+  .card--media {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+  }
+  .card--media .card-media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.bonus-card {
+  background: var(--background);
+  border-radius: var(--radius-card);
+  padding: 20px 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+.bonus-card h3 {
+  color: var(--text-heading);
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+}
+.bonus-card .bonus-price {
+  margin-bottom: 4px;
+}
+.bonus-card p:last-child {
+  margin-bottom: 0;
+  color: var(--text);
+  font-size: 0.9375rem;
+}
+
+/* ---------- Exemplos práticos ---------- */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.example-card {
+  background: var(--background);
+  border: 1px solid rgba(0, 52, 120, 0.1);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: 0 10px 25px rgba(0, 52, 120, 0.06);
+}
+.example-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-on-dark);
+  background: var(--accent-blue);
+  border-radius: 40px;
+  padding: 4px 12px;
+  margin-bottom: 12px;
+}
+.example-korean {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.example-translation {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+}
+.example-audio {
+  display: block;
+  width: 100%;
+  height: 36px;
+  margin: 12px 0 16px;
+  border-radius: 8px;
+}
+
+.example-explanation {
+  margin-bottom: 0;
+  color: var(--text);
+}
+
+/* ---------- Bônus ---------- */
+#bonus {
+  background: var(--primary-dark);
+  color: var(--text-on-dark);
+}
+#bonus h2 {
+  color: var(--text-on-dark);
+}
+.bonus-total {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  margin-bottom: 32px;
+  letter-spacing: 0.02em;
+}
+.bonus-price-old {
+  text-decoration: line-through;
+  color: var(--danger);
+}
+.bonus-price-new {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ---------- Preço / urgência ---------- */
+#preco {
+  background: var(--background-alt);
+}
+.price-total-label {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+/* ---------- Card 1: Oferta (ponto focal da seção) ---------- */
+.pricing-card {
+  background: var(--primary);
+  color: var(--text-on-dark);
+  border-radius: var(--radius-card);
+  padding: 40px 28px 28px;
+  margin-top: 24px;
+  box-shadow: 0 25px 50px rgba(0, 52, 120, 0.4);
+}
+.pricing-card .price-old {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+.pricing-card .price-new {
+  font-size: 2.125rem;
+  line-height: 1.2;
+  font-weight: 800;
+  color: var(--text-on-dark);
+  margin-bottom: 8px;
+}
+.pricing-card .price-highlight {
+  color: #FFD54A;
+}
+.pricing-card .price-note {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  margin-bottom: 28px;
+}
+
+#cta-checkout {
+  padding: 26px 24px;
+  font-size: 1.25rem;
+  background-image: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  color: var(--text-on-dark);
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.18),
+    0 0 34px rgba(255, 255, 255, 0.55),
+    0 18px 35px rgba(0, 0, 0, 0.35);
+  animation: cta-pulse 2s ease-in-out infinite;
+}
+#cta-checkout:hover {
+  animation-play-state: paused;
+  transform: scale(1.02);
+  filter: none;
+}
+
+@keyframes cta-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.trust-badges {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+}
+.trust-badges li + li::before {
+  content: "·";
+  margin-right: 10px;
+  opacity: 0.6;
+}
+
+/* ---------- Card 2: Garantia (reforço, não compete com o Card 1) ---------- */
+.guarantee-card {
+  background: var(--background);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-card);
+  padding: 28px 24px;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.guarantee-icon {
+  font-size: 2rem;
+}
+.guarantee-card h3 {
+  color: var(--primary);
+  font-size: 1.0625rem;
+  margin-bottom: 0;
+}
+.guarantee-card p {
+  color: var(--text);
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+.guarantee-card strong {
+  color: var(--primary);
+}
+
+/* ---------- FAQ ---------- */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: var(--navy-deepest);
+  border-radius: var(--radius-faq);
+  color: var(--accent-blue);
+  padding: 0 20px;
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: none;
+  border: none;
+  color: var(--accent-blue);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  padding: 20px 0;
+  cursor: pointer;
+}
+
+.faq-icon {
+  transition: transform 0.2s ease;
+  flex: 0 0 auto;
+  font-size: 1.125rem;
+}
+.faq-item[data-open="true"] .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+  color: #cfe0ff;
+}
+.faq-item[data-open="true"] .faq-answer {
+  max-height: 300px;
+  padding-bottom: 20px;
+}
+.faq-answer p {
+  margin: 0;
+}
+
+.faq-final-cta {
+  margin-top: 32px;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding: 40px 0;
+  font-size: 0.8125rem;
+  color: #8a94a3;
+  text-align: center;
+  background: var(--navy-deepest);
+}
+.site-footer p {
+  margin: 0 0 8px;
+}
+
+/* ==========================================================================
+   Telas maiores — só ajustes tipográficos de detalhe.
+   O "funil" continua com a mesma largura de container em qualquer tamanho
+   de tela: nunca vira um layout largo de várias colunas.
+   ========================================================================== */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.125rem;
+    line-height: 2.5625rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    line-height: 2.4rem;
+  }
+
+  .pricing-card .price-new {
+    font-size: 2.75rem;
+  }
+}
