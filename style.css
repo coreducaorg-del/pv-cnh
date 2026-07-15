@@ -164,7 +164,7 @@ ul {
 .hero-mockup-img {
   width: 100%;
   max-width: 480px;
-  aspect-ratio: 1402 / 1122;
+  aspect-ratio: 5 / 4;
   margin: 24px auto 0;
   object-fit: contain;
 }

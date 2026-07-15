@@ -38,7 +38,7 @@ ul{margin:0 0 16px;padding-left:20px}
 .urgency-bar{position:fixed;top:0;left:0;width:100%;z-index:9999;min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--danger);color:var(--text-on-dark);text-align:center;padding:8px 16px}
 .urgency-bar p{margin:0;font-size:0.8125rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .urgency-bar [data-urgency-timer]{display:inline-block;margin-left:4px;background:rgba(255,255,255,0.95);color:#7A0A22;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-weight:800;font-variant-numeric:tabular-nums;border-radius:7px;padding:4px 10px;line-height:1}
-.hero-mockup-img{width:100%;max-width:480px;aspect-ratio:1402/1122;margin:24px auto 0;object-fit:contain}
+.hero-mockup-img{width:100%;max-width:480px;aspect-ratio:5/4;margin:24px auto 0;object-fit:contain}
 #hero.section{padding-bottom:40px}
 #hero h1{margin-bottom:0}
 #hero .lede{margin:24px 0 0}
@@ -48,6 +48,18 @@ ul{margin:0 0 16px;padding-left:20px}
 @media (max-width:480px){#hero.section{padding-top:20px;padding-bottom:24px}#hero h1{font-size:24.5px;line-height:1.15}#hero .hero-mockup-img{width:68%;margin-top:16px}#hero .lede{margin-top:28px;font-size:1rem}#hero .checklist{margin-top:10px}#hero .checklist li{font-size:0.875rem;padding:2px 0 2px 26px}#hero .btn-primary{margin-top:28px}}
 .btn-primary{display:inline-block;font-family:var(--font-family);font-size:1.125rem;font-weight:700;line-height:1;color:var(--text-on-dark);text-decoration:none;text-align:center;padding:22px 30px;border:none;border-radius:var(--radius-button);cursor:pointer;width:100%;background-image:radial-gradient(38.67% 91.17% at 50% 8.83%,var(--primary) 0%,var(--gradient-end) 100%);box-shadow:rgba(0,52,120,0.5) 0px 0px 20px 0px,rgba(30,91,184,0.4) 0px 0px 40px 0px,rgba(0,52,120,0.25) 0px 10px 25px 0px;transition:0.5s}
 @media (min-width:768px){h1{font-size:2.125rem;line-height:2.5625rem}}
+
+/* Estrutura do carrossel de depoimentos (não é visual, é a geometria que a
+   medição em JS depende): precisa estar disponível já no primeiro layout,
+   senão o script mede a largura do carrossel antes do style.css completo
+   (assíncrono) carregar e o valor errado fica "congelado" nos slides,
+   causando o salto de layout (CLS) quando o CSS completo aplica depois. */
+.testimonial-carousel{position:relative;width:100%;max-width:100%;padding:0 52px}
+.testimonial-viewport{overflow:hidden;width:100%;position:relative}
+.testimonial-track{display:flex;align-items:center;gap:16px;width:max-content}
+.testimonial-slide{flex:0 0 auto;aspect-ratio:9/16;position:relative;overflow:hidden}
+.testimonial-video-embed{position:relative;width:100%;aspect-ratio:340/604;background:#000}
+@media (max-width:400px){.testimonial-carousel{padding:0 34px}.testimonial-track{gap:10px}}
 </style>
 
 <!-- Fonte do Google carregada de forma assíncrona (preload + swap pra rel=stylesheet)
@@ -76,7 +88,7 @@ ul{margin:0 0 16px;padding-left:20px}
 
       <picture>
         <source srcset="assets/hero/mockup-produto.avif" type="image/avif">
-        <img class="hero-mockup-img" src="assets/hero/mockup-produto.png" alt="Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso" fetchpriority="high" decoding="async">
+        <img class="hero-mockup-img" src="assets/hero/mockup-produto.png" alt="Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso" width="960" height="768" fetchpriority="high" decoding="async">
       </picture>
 
       <p class="lede">Em menos de 2h, você já entende e repete suas primeiras falas em coreano (com a pronúncia e entonação corretas) através deste mini-curso.</p>
@@ -102,7 +114,7 @@ ul{margin:0 0 16px;padding-left:20px}
               <div class="testimonial-video-embed" data-panda-facade data-vz="52703098-ed8" data-video-id="efebd99d-70dc-41ea-80a7-8367f0335a26" role="button" tabindex="0" aria-label="Reproduzir depoimento em vídeo">
                 <picture>
                   <source srcset="assets/depoimentos/thumb-video-1.avif" type="image/avif">
-                  <img class="panda-facade-thumb" src="assets/depoimentos/thumb-video-1.png" alt="Rafaela, aluna do Coreano na Hora, em depoimento em vídeo" loading="lazy">
+                  <img class="panda-facade-thumb" src="assets/depoimentos/thumb-video-1.png" alt="Rafaela, aluna do Coreano na Hora, em depoimento em vídeo" width="556" height="807" loading="lazy">
                 </picture>
                 <button type="button" class="panda-play-btn" tabindex="-1" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
@@ -113,14 +125,14 @@ ul{margin:0 0 16px;padding-left:20px}
             <article class="testimonial-slide" data-carousel-slide>
               <picture>
                 <source srcset="assets/depoimentos/depoimento-print-1.avif" type="image/avif">
-                <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-1.jpg" alt="Print de depoimento de aluna no WhatsApp" loading="lazy">
+                <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-1.jpg" alt="Print de depoimento de aluna no WhatsApp" width="1270" height="1600" loading="lazy">
               </picture>
             </article>
             <article class="testimonial-slide" data-carousel-slide>
               <div class="testimonial-video-embed" data-panda-facade data-vz="52703098-ed8" data-video-id="2339c87e-6159-46a3-8ecc-3ff3ca403e2e" role="button" tabindex="0" aria-label="Reproduzir depoimento em vídeo">
                 <picture>
                   <source srcset="assets/depoimentos/thumb-video-2.avif" type="image/avif">
-                  <img class="panda-facade-thumb" src="assets/depoimentos/thumb-video-2.png" alt="Aluna do Coreano na Hora em depoimento em vídeo" loading="lazy">
+                  <img class="panda-facade-thumb" src="assets/depoimentos/thumb-video-2.png" alt="Aluna do Coreano na Hora em depoimento em vídeo" width="452" height="792" loading="lazy">
                 </picture>
                 <button type="button" class="panda-play-btn" tabindex="-1" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
@@ -131,7 +143,7 @@ ul{margin:0 0 16px;padding-left:20px}
             <article class="testimonial-slide" data-carousel-slide>
               <picture>
                 <source srcset="assets/depoimentos/depoimento-print-2.avif" type="image/avif">
-                <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-2.jpg" alt="Print de depoimento de aluna no WhatsApp" loading="lazy">
+                <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-2.jpg" alt="Print de depoimento de aluna no WhatsApp" width="1290" height="1225" loading="lazy">
               </picture>
             </article>
           </div>
@@ -152,7 +164,7 @@ ul{margin:0 0 16px;padding-left:20px}
       <div class="card-grid">
         <div class="card card--media">
           <div class="card-media">
-            <img src="assets/entregaveis/videoaulas.avif" alt="Mockup das videoaulas do Coreano na Hora" loading="lazy">
+            <img src="assets/entregaveis/videoaulas.avif" alt="Mockup das videoaulas do Coreano na Hora" width="1705" height="1244" loading="lazy">
           </div>
           <div class="card-body">
             <div class="card-icon">🎥</div>
@@ -166,7 +178,7 @@ ul{margin:0 0 16px;padding-left:20px}
         </div>
         <div class="card card--media">
           <div class="card-media">
-            <img src="assets/entregaveis/mobile.avif" alt="Mockup do Manual Mobile-First do Coreano na Hora" loading="lazy">
+            <img src="assets/entregaveis/mobile.avif" alt="Mockup do Manual Mobile-First do Coreano na Hora" width="568" height="380" loading="lazy">
           </div>
           <div class="card-body">
             <div class="card-icon">📱</div>
@@ -179,7 +191,7 @@ ul{margin:0 0 16px;padding-left:20px}
         </div>
         <div class="card card--media">
           <div class="card-media">
-            <img src="assets/entregaveis/pacote_de_audios.avif" alt="Mockup do Pacote de Áudios do Coreano na Hora" loading="lazy">
+            <img src="assets/entregaveis/pacote_de_audios.avif" alt="Mockup do Pacote de Áudios do Coreano na Hora" width="929" height="1244" loading="lazy">
           </div>
           <div class="card-body">
             <div class="card-icon">🎧</div>
@@ -192,7 +204,7 @@ ul{margin:0 0 16px;padding-left:20px}
         </div>
         <div class="card card--media">
           <div class="card-media">
-            <img src="assets/entregaveis/cartoes_de_emergencia.avif" alt="Mockup dos Cartões de Emergência do Coreano na Hora" loading="lazy">
+            <img src="assets/entregaveis/cartoes_de_emergencia.avif" alt="Mockup dos Cartões de Emergência do Coreano na Hora" width="1608" height="1244" loading="lazy">
           </div>
           <div class="card-body">
             <div class="card-icon">🆘</div>
