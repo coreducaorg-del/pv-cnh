@@ -67,6 +67,13 @@ h1 {
   color: var(--primary);
 }
 
+.highlight-badge {
+  background: var(--accent-blue);
+  color: var(--text-on-dark);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
 h2 {
   font-size: 1.625rem;
   color: var(--primary);
