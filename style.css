@@ -194,19 +194,19 @@ ul {
    sem precisar rolar tanto. Não afeta o breakpoint desktop (768px+). */
 @media (max-width: 480px) {
   #hero.section {
-    padding-top: 32px;
+    padding-top: 20px;
     padding-bottom: 24px;
   }
   #hero h1 {
-    font-size: 1.5rem;
+    font-size: 24.5px;
     line-height: 1.15;
   }
   #hero .hero-mockup-img {
-    width: 62%;
+    width: 68%;
     margin-top: 16px;
   }
   #hero .lede {
-    margin-top: 16px;
+    margin-top: 28px;
     font-size: 1rem;
   }
   #hero .checklist {
