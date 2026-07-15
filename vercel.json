@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/pv1", "destination": "/index.html" }
+  ]
+}
