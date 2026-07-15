@@ -14,8 +14,51 @@
 <title>Coreano na Hora</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br">
+<link rel="preconnect" href="https://unpkg.com">
+
+<!-- CSS crítico (above-the-fold: barra de urgência + hero + botão) inline
+     pra primeira pintura não esperar o CSS completo nem as fontes. -->
+<style>
+:root{--primary:#003478;--gradient-end:#1E5BB8;--danger:#C60C30;--background:#FFFFFF;--text:#333333;--text-heading:#0A0A0A;--text-on-dark:#FFFFFF;--font-family:'Plus Jakarta Sans','Satoshi',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--radius-button:64px;--container-max:560px}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{margin:0;overflow-x:hidden;font-family:var(--font-family);font-size:1rem;line-height:1.5;color:var(--text);background:var(--background)}
+img{max-width:100%;display:block}
+h1{font-family:var(--font-family);font-weight:700;margin:0 0 16px;line-height:1.2;font-size:1.4375rem;color:var(--text-heading);letter-spacing:-0.01em}
+.highlight-blue{color:var(--primary)}
+p{margin:0 0 16px}
+ul{margin:0 0 16px;padding-left:20px}
+.container{width:100%;max-width:var(--container-max);margin:0 auto;padding:0 20px}
+.section{padding:56px 0;border-bottom:none}
+.lede{font-size:1.125rem;line-height:1.5;color:var(--text)}
+.checklist{list-style:none;padding:0}
+.checklist li{position:relative;padding:6px 0 6px 30px}
+.checklist li::before{content:"\2705";position:absolute;left:0;top:6px}
+.urgency-bar{position:fixed;top:0;left:0;width:100%;z-index:9999;min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--danger);color:var(--text-on-dark);text-align:center;padding:8px 16px}
+.urgency-bar p{margin:0;font-size:0.8125rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.urgency-bar [data-urgency-timer]{display:inline-block;margin-left:4px;background:rgba(255,255,255,0.95);color:#7A0A22;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-weight:800;font-variant-numeric:tabular-nums;border-radius:7px;padding:4px 10px;line-height:1}
+.hero-mockup-img{width:100%;max-width:480px;aspect-ratio:1402/1122;margin:24px auto 0;object-fit:contain}
+#hero.section{padding-bottom:40px}
+#hero h1{margin-bottom:0}
+#hero .lede{margin:24px 0 0}
+#hero .checklist{margin:16px 0 0}
+#hero .checklist li{padding:4px 0 4px 30px}
+#hero .btn-primary{margin-top:32px}
+@media (max-width:480px){#hero.section{padding-top:20px;padding-bottom:24px}#hero h1{font-size:24.5px;line-height:1.15}#hero .hero-mockup-img{width:68%;margin-top:16px}#hero .lede{margin-top:28px;font-size:1rem}#hero .checklist{margin-top:10px}#hero .checklist li{font-size:0.875rem;padding:2px 0 2px 26px}#hero .btn-primary{margin-top:28px}}
+.btn-primary{display:inline-block;font-family:var(--font-family);font-size:1.125rem;font-weight:700;line-height:1;color:var(--text-on-dark);text-decoration:none;text-align:center;padding:22px 30px;border:none;border-radius:var(--radius-button);cursor:pointer;width:100%;background-image:radial-gradient(38.67% 91.17% at 50% 8.83%,var(--primary) 0%,var(--gradient-end) 100%);box-shadow:rgba(0,52,120,0.5) 0px 0px 20px 0px,rgba(30,91,184,0.4) 0px 0px 40px 0px,rgba(0,52,120,0.25) 0px 10px 25px 0px;transition:0.5s}
+@media (min-width:768px){h1{font-size:2.125rem;line-height:2.5625rem}}
+</style>
+
+<!-- Fonte do Google carregada de forma assíncrona (preload + swap pra rel=stylesheet)
+     pra não bloquear a primeira pintura; display=swap já evita FOIT. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+
+<!-- CSS completo carregado de forma assíncrona (o crítico acima já cobre o
+     conteúdo visível na primeira dobra) -->
+<link rel="preload" as="style" href="style.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="style.css"></noscript>
 </head>
 <body>
 
@@ -31,7 +74,10 @@
     <div class="container">
       <h1>Aprenda o <span class="highlight-blue">Coreano nativo</span> dos Doramas em <span class="highlight-blue">menos de 2h</span></h1>
 
-      <img class="hero-mockup-img" src="assets/hero/mockup-produto.png" alt="Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso">
+      <picture>
+        <source srcset="assets/hero/mockup-produto.avif" type="image/avif">
+        <img class="hero-mockup-img" src="assets/hero/mockup-produto.png" alt="Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso" fetchpriority="high" decoding="async">
+      </picture>
 
       <p class="lede">Em menos de 2h, você já entende e repete suas primeiras falas em coreano (com a pronúncia e entonação corretas) através deste mini-curso.</p>
 
@@ -53,22 +99,32 @@
         <div class="testimonial-viewport" data-carousel-viewport>
           <div class="testimonial-track" data-carousel-track>
             <article class="testimonial-slide" data-carousel-slide>
-              <div class="testimonial-video-embed">
-                <iframe id="panda-efebd99d-70dc-41ea-80a7-8367f0335a26" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=efebd99d-70dc-41ea-80a7-8367f0335a26&iosFakeFullscreen=true" style="border:none;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen="true" fetchpriority="high"></iframe>
+              <div class="testimonial-video-embed" data-panda-facade data-vz="52703098-ed8" data-video-id="efebd99d-70dc-41ea-80a7-8367f0335a26" role="button" tabindex="0" aria-label="Reproduzir depoimento em vídeo">
+                <button type="button" class="panda-play-btn" tabindex="-1" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                </button>
                 <div class="testimonial-drag-handle" aria-hidden="true"><span></span></div>
               </div>
             </article>
             <article class="testimonial-slide" data-carousel-slide>
-              <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-1.jpg" alt="Print de depoimento de aluna no WhatsApp" loading="lazy">
+              <picture>
+                <source srcset="assets/depoimentos/depoimento-print-1.avif" type="image/avif">
+                <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-1.jpg" alt="Print de depoimento de aluna no WhatsApp" loading="lazy">
+              </picture>
             </article>
             <article class="testimonial-slide" data-carousel-slide>
-              <div class="testimonial-video-embed">
-                <iframe id="panda-2339c87e-6159-46a3-8ecc-3ff3ca403e2e" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=2339c87e-6159-46a3-8ecc-3ff3ca403e2e&iosFakeFullscreen=true" style="border:none;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen="true" fetchpriority="high"></iframe>
+              <div class="testimonial-video-embed" data-panda-facade data-vz="52703098-ed8" data-video-id="2339c87e-6159-46a3-8ecc-3ff3ca403e2e" role="button" tabindex="0" aria-label="Reproduzir depoimento em vídeo">
+                <button type="button" class="panda-play-btn" tabindex="-1" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                </button>
                 <div class="testimonial-drag-handle" aria-hidden="true"><span></span></div>
               </div>
             </article>
             <article class="testimonial-slide" data-carousel-slide>
-              <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-2.jpg" alt="Print de depoimento de aluna no WhatsApp" loading="lazy">
+              <picture>
+                <source srcset="assets/depoimentos/depoimento-print-2.avif" type="image/avif">
+                <img class="testimonial-print-img" src="assets/depoimentos/depoimento-print-2.jpg" alt="Print de depoimento de aluna no WhatsApp" loading="lazy">
+              </picture>
             </article>
           </div>
         </div>
@@ -78,9 +134,6 @@
 
         <div class="carousel-dots" data-carousel-dots></div>
       </div>
-
-      <script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-efebd99d-70dc-41ea-80a7-8367f0335a26';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});}});})</script>
-      <script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-2339c87e-6159-46a3-8ecc-3ff3ca403e2e';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});}});})</script>
     </div>
   </section>
 
@@ -324,8 +377,9 @@
 
 <script src="script.js"></script>
 
-<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css">
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" fetchpriority="low"></script>
+<link rel="preload" as="style" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css"></noscript>
 <script>
     const lenis = new Lenis({
       duration: 1.2,

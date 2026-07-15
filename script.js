@@ -267,6 +267,64 @@
   document.querySelectorAll('[data-carousel]').forEach(initCarousel);
 
   // ==========================================================================
+  // Facade dos vídeos de depoimento (Panda Video): o iframe/player só é
+  // criado no clique/teque, pra não pagar o custo de rede+JS de dois players
+  // de vídeo logo no carregamento da página quando o usuário talvez nem
+  // chegue a assistir.
+  // ==========================================================================
+  function loadPandaEmbed(container) {
+    var videoId = container.getAttribute('data-video-id');
+    var vz = container.getAttribute('data-vz');
+    var playerId = 'panda-' + videoId;
+
+    var playBtn = container.querySelector('.panda-play-btn');
+    if (playBtn) playBtn.remove();
+
+    var iframe = document.createElement('iframe');
+    iframe.id = playerId;
+    iframe.src = 'https://player-vz-' + vz + '.tv.pandavideo.com.br/embed/?v=' + videoId + '&iosFakeFullscreen=true';
+    iframe.style.border = 'none';
+    iframe.setAttribute('allow', 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture');
+    iframe.setAttribute('allowfullscreen', 'true');
+    iframe.setAttribute('fetchpriority', 'high');
+    container.insertBefore(iframe, container.firstChild);
+
+    container.removeAttribute('data-panda-facade');
+    container.removeAttribute('role');
+    container.removeAttribute('tabindex');
+    container.removeAttribute('aria-label');
+
+    if (!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')) {
+      var s = document.createElement('script');
+      s.src = 'https://player.pandavideo.com.br/api.v2.js';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+    window.pandascripttag = window.pandascripttag || [];
+    window.pandascripttag.push(function () {
+      var p = new PandaPlayer(playerId, {
+        onReady: function () {
+          p.loadWindowScreen({ panda_id_player: playerId });
+        }
+      });
+    });
+  }
+
+  document.querySelectorAll('[data-panda-facade]').forEach(function (facade) {
+    function activate(event) {
+      if (event.target.closest('.testimonial-drag-handle')) return;
+      loadPandaEmbed(facade);
+    }
+    facade.addEventListener('click', activate, { once: true });
+    facade.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        activate(event);
+      }
+    });
+  });
+
+  // ==========================================================================
   // Accordion do FAQ
   // ==========================================================================
   document.querySelectorAll('[data-faq-toggle]').forEach(function (button) {

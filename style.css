@@ -311,6 +311,33 @@ ul {
   display: block;
 }
 
+/* Facade do vídeo (Panda Video): mostrado até o clique, evita carregar o
+   player/iframe (pesado) pra depoimentos que o usuário talvez nunca abra. */
+.testimonial-video-embed[data-panda-facade] {
+  cursor: pointer;
+  background: radial-gradient(120% 100% at 50% 0%, var(--gradient-end) 0%, var(--navy-deepest) 100%);
+}
+.panda-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+.panda-play-btn svg {
+  margin-left: 3px;
+}
+
 /* Faixa de arrasto do carrossel sobre os slides de vídeo: o iframe do Panda
    fica 100% livre pra receber toques (play/pause nativos, confiáveis em
    qualquer navegador, inclusive Safari iOS). Arrastar o carrossel a partir
