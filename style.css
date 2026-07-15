@@ -189,6 +189,38 @@ ul {
   margin-top: 32px;
 }
 
+/* Telas mobile estreitas: seção mais compacta, título com bem mais
+   destaque, mockup menor, bullets mais enxutos — CTA visível mais cedo
+   sem precisar rolar tanto. Não afeta o breakpoint desktop (768px+). */
+@media (max-width: 480px) {
+  #hero.section {
+    padding-top: 32px;
+    padding-bottom: 24px;
+  }
+  #hero h1 {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+  #hero .hero-mockup-img {
+    width: 55%;
+    margin-top: 16px;
+  }
+  #hero .lede {
+    margin-top: 16px;
+    font-size: 1rem;
+  }
+  #hero .checklist {
+    margin-top: 10px;
+  }
+  #hero .checklist li {
+    font-size: 0.875rem;
+    padding: 2px 0 2px 26px;
+  }
+  #hero .btn-primary {
+    margin-top: 20px;
+  }
+}
+
 /* ---------- Botões ---------- */
 .btn-primary {
   display: inline-block;
