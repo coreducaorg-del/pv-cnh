@@ -498,15 +498,31 @@
   // branco de forma síncrona (ainda dentro do clique, preservando o gesto) e
   // só depois do atraso é que ela recebe a URL de destino — dando o mesmo
   // tempo de folga pro tracking sem correr o risco de bloqueio.
+  //
+  // Proteções extras (aba fechada/bloqueada nesse meio-tempo, cliques duplos):
+  // - Confere tab.closed antes de navegar; se a aba não existir mais, tenta
+  //   abrir de novo na hora e, se isso também falhar, navega a aba atual como
+  //   último recurso — o usuário sempre tem que chegar ao checkout, mesmo
+  //   que o tracking eventualmente não tenha tido tempo de disparar.
+  // - Debounce: clique repetido enquanto uma navegação já está pendente é
+  //   ignorado, pra nunca abrir duas abas/referências conflitantes.
+  // - Delay reduzido pra 90ms (ainda dá folga pro tracking, mas encurta a
+  //   janela em que a aba pode ser fechada/bloqueada nesse meio-tempo).
   // ==========================================================================
   (function initCheckoutClickDelay() {
     var checkoutLink = document.getElementById('cta-checkout');
     if (!checkoutLink) return;
 
+    var CHECKOUT_DELAY_MS = 90;
+    var navigationPending = false;
+
     checkoutLink.addEventListener('click', function (event) {
       var href = checkoutLink.href;
       if (!href) return;
       event.preventDefault();
+
+      if (navigationPending) return;
+      navigationPending = true;
 
       // 'about:blank' explícito — uma string vazia ('') não é garantida como
       // página em branco em todos os navegadores; a resolução de URL pode
@@ -517,15 +533,22 @@
       if (newTab) newTab.opener = null;
 
       setTimeout(function () {
-        if (newTab) {
+        if (newTab && !newTab.closed) {
           newTab.location.href = href;
         } else {
-          // pop-up bloqueado mesmo assim (ex: bloqueador de terceiros) —
-          // navega na aba atual como último recurso, pro checkout nunca
-          // ficar preso sem reação ao clique.
-          window.location.href = href;
+          // a aba foi bloqueada de início ou fechada nesse meio-tempo —
+          // tenta abrir de novo na hora, sem esperar mais; se isso também
+          // falhar (bloqueio persistente), navega a aba atual como último
+          // recurso, pra nunca deixar o clique sem reação nenhuma.
+          var retryTab = window.open(href, '_blank');
+          if (retryTab) {
+            retryTab.opener = null;
+          } else {
+            window.location.href = href;
+          }
         }
-      }, 180);
+        navigationPending = false;
+      }, CHECKOUT_DELAY_MS);
     });
   })();
 })();
