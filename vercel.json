@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/pv1", "destination": "/index.html" }
+    { "source": "/pv1", "destination": "/index.html" },
+    { "source": "/privacidade", "destination": "/privacidade.html" }
   ]
 }
