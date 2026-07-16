@@ -484,4 +484,43 @@
       }
     });
   });
+
+  // ==========================================================================
+  // Botão de checkout (#cta-checkout): no Safari (principalmente iOS), a
+  // troca imediata de aba (target="_blank") às vezes corta a execução do
+  // script de tracking (Utmify/InitiateCheckout) antes dele terminar de
+  // disparar, perdendo o evento.
+  //
+  // Abrir a nova aba com window.open() dentro de um setTimeout NÃO funciona
+  // como correção — o Safari exige que window.open seja chamado de forma
+  // síncrona dentro do gesto de clique; qualquer atraso via setTimeout quebra
+  // essa cadeia e a aba é bloqueada como pop-up. Por isso a aba é aberta em
+  // branco de forma síncrona (ainda dentro do clique, preservando o gesto) e
+  // só depois do atraso é que ela recebe a URL de destino — dando o mesmo
+  // tempo de folga pro tracking sem correr o risco de bloqueio.
+  // ==========================================================================
+  (function initCheckoutClickDelay() {
+    var checkoutLink = document.getElementById('cta-checkout');
+    if (!checkoutLink) return;
+
+    checkoutLink.addEventListener('click', function (event) {
+      var href = checkoutLink.href;
+      if (!href) return;
+      event.preventDefault();
+
+      var newTab = window.open('', '_blank');
+      if (newTab) newTab.opener = null;
+
+      setTimeout(function () {
+        if (newTab) {
+          newTab.location.href = href;
+        } else {
+          // pop-up bloqueado mesmo assim (ex: bloqueador de terceiros) —
+          // navega na aba atual como último recurso, pro checkout nunca
+          // ficar preso sem reação ao clique.
+          window.location.href = href;
+        }
+      }, 180);
+    });
+  })();
 })();
