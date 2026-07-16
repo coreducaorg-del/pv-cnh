@@ -508,7 +508,12 @@
       if (!href) return;
       event.preventDefault();
 
-      var newTab = window.open('', '_blank');
+      // 'about:blank' explícito — uma string vazia ('') não é garantida como
+      // página em branco em todos os navegadores; a resolução de URL pode
+      // recair na própria página atual (document.baseURI), fazendo a nova
+      // aba carregar uma cópia inteira da landing page (que aparenta ter
+      // "voltado pro topo") em vez de ficar em branco esperando o redirect.
+      var newTab = window.open('about:blank', '_blank');
       if (newTab) newTab.opener = null;
 
       setTimeout(function () {
