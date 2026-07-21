@@ -11,7 +11,7 @@
 /* ---------- 1. Alerta/headline ---------- */
 .upsell-alert {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   font-size: 1.375rem;
   font-weight: 800;
@@ -21,21 +21,22 @@
 }
 .upsell-alert-icon {
   flex: 0 0 auto;
-  font-size: 1.5rem;
-  color: var(--danger);
-  line-height: 1;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
 
-/* ---------- 2. Barra de etapa ---------- */
-.upsell-step-bar {
-  background: var(--danger);
-  color: var(--text-on-dark);
-  text-align: center;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+/* Telas estreitas: ícone um pouco menor, deixando mais espaço pro texto
+   quebrar de forma confortável ao lado dele. */
+@media (max-width: 480px) {
+  .upsell-alert {
+    font-size: 1.1875rem;
+    gap: 10px;
+  }
+  .upsell-alert-icon {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 /* ---------- 3. Texto de contexto ---------- */
@@ -51,7 +52,7 @@
   margin-bottom: 24px;
 }
 
-/* ---------- 4. Barra de progresso ---------- */
+/* ---------- 2. Barra de progresso ---------- */
 .upsell-progress {
   display: flex;
   align-items: center;
@@ -78,9 +79,10 @@
   color: var(--danger);
   min-width: 34px;
   text-align: right;
+  white-space: nowrap;
 }
 
-/* ---------- 5. Vídeo de upsell (facade, 16:9) ---------- */
+/* ---------- 4. Vídeo de upsell (facade, 16:9) ---------- */
 .upsell-video-embed {
   position: relative;
   width: 100%;
