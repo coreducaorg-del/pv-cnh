@@ -1,0 +1,119 @@
+/* ==========================================================================
+   Coreano na Hora — Upsell 1 (pós-compra)
+   Estilos específicos desta página; tipografia, cores base, .container etc.
+   vêm do style.css compartilhado com o resto do site.
+   ========================================================================== */
+
+.upsell-section {
+  padding-top: 32px;
+}
+
+/* ---------- 1. Alerta/headline ---------- */
+.upsell-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-heading);
+  margin-bottom: 20px;
+}
+.upsell-alert-icon {
+  flex: 0 0 auto;
+  font-size: 1.5rem;
+  color: var(--danger);
+  line-height: 1;
+}
+
+/* ---------- 2. Barra de etapa ---------- */
+.upsell-step-bar {
+  background: var(--danger);
+  color: var(--text-on-dark);
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* ---------- 3. Texto de contexto ---------- */
+.upsell-context-italic {
+  font-style: italic;
+  color: var(--text);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+.upsell-context {
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 24px;
+}
+
+/* ---------- 4. Barra de progresso ---------- */
+.upsell-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.upsell-progress-track {
+  flex: 1 1 auto;
+  height: 14px;
+  background: #E5E5E5;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.upsell-progress-fill {
+  height: 100%;
+  background: var(--danger);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+.upsell-progress-label {
+  flex: 0 0 auto;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--danger);
+  min-width: 34px;
+  text-align: right;
+}
+
+/* ---------- 5. Vídeo de upsell (facade, 16:9) ---------- */
+.upsell-video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #222222;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+.upsell-video-embed iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+.upsell-video-embed[data-panda-facade] {
+  cursor: pointer;
+}
+.upsell-video-placeholder-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  padding: 0 16px;
+  margin: 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8125rem;
+}
+
+/* No formato 16:9 o botão de play já definido em style.css fica um pouco
+   pequeno visualmente — aumenta discretamente só aqui. */
+.upsell-video-embed .panda-play-btn {
+  width: 68px;
+  height: 68px;
+}

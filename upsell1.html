@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Espere! Não saia ainda — Coreano na Hora</title>
+<link rel="icon" type="image/png" href="assets/favicon/favicon-32x32.png">
+<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upsell.css">
+</head>
+<body>
+
+<main>
+  <section class="section upsell-section">
+    <div class="container">
+
+      <!-- ============ 1. ALERTA / HEADLINE ============ -->
+      <div class="upsell-alert">
+        <span class="upsell-alert-icon" aria-hidden="true">⚠️</span>
+        <span>ESPERE! Seu pedido não está 100% concluído ainda...</span>
+      </div>
+
+      <!-- ============ 2. BARRA DE ETAPA ============ -->
+      <div class="upsell-step-bar">Etapa 2: Melhore seu pedido!</div>
+
+      <!-- ============ 3. TEXTO DE CONTEXTO ============ -->
+      <p class="upsell-context-italic">Antes de acessar o seu produto...</p>
+      <p class="upsell-context">Você só verá essa página <strong>uma única vez</strong>... Assista agora o rápido vídeo abaixo:</p>
+
+      <!-- ============ 4. BARRA DE PROGRESSO ============ -->
+      <div class="upsell-progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do pedido">
+        <div class="upsell-progress-track">
+          <div class="upsell-progress-fill" style="width: 70%"></div>
+        </div>
+        <span class="upsell-progress-label">70%</span>
+      </div>
+
+      <!-- ============ 5. VÍDEO DE UPSELL (facade — aguardando embed real do Panda Video) ============ -->
+      <div class="upsell-video-embed" data-panda-facade data-vz="" data-video-id="" role="button" tabindex="0" aria-label="Reproduzir vídeo">
+        <p class="upsell-video-placeholder-text">[EMBED DO VÍDEO DE UPSELL AQUI]</p>
+        <button type="button" class="panda-play-btn" tabindex="-1" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script>
+  // Facade do vídeo de upsell — mesmo padrão da página principal (carrega o
+  // iframe do Panda só no clique). data-vz/data-video-id ainda estão vazios
+  // (embed real a ser enviado depois); nesse caso o clique não faz nada, só
+  // a estrutura já fica pronta pra funcionar assim que os IDs reais entrarem.
+  (function () {
+    'use strict';
+
+    function loadPandaEmbed(container) {
+      var videoId = container.getAttribute('data-video-id');
+      var vz = container.getAttribute('data-vz');
+      if (!videoId || !vz) return;
+
+      var playerId = 'panda-' + videoId;
+      var playBtn = container.querySelector('.panda-play-btn');
+      if (playBtn) playBtn.remove();
+      var placeholder = container.querySelector('.upsell-video-placeholder-text');
+      if (placeholder) placeholder.remove();
+
+      var iframe = document.createElement('iframe');
+      iframe.id = playerId;
+      iframe.src = 'https://player-vz-' + vz + '.tv.pandavideo.com.br/embed/?v=' + videoId + '&autoplay=true';
+      iframe.style.border = 'none';
+      iframe.setAttribute('allow', 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture');
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.setAttribute('fetchpriority', 'high');
+      container.appendChild(iframe);
+
+      container.removeAttribute('data-panda-facade');
+      container.removeAttribute('role');
+      container.removeAttribute('tabindex');
+      container.removeAttribute('aria-label');
+
+      if (!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')) {
+        var s = document.createElement('script');
+        s.src = 'https://player.pandavideo.com.br/api.v2.js';
+        s.async = true;
+        document.head.appendChild(s);
+      }
+      window.pandascripttag = window.pandascripttag || [];
+      window.pandascripttag.push(function () {
+        new PandaPlayer(playerId, { onReady: function () {} });
+      });
+    }
+
+    document.querySelectorAll('[data-panda-facade]').forEach(function (facade) {
+      function activate(event) {
+        loadPandaEmbed(facade);
+      }
+      facade.addEventListener('click', activate, { once: true });
+      facade.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          activate(event);
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
