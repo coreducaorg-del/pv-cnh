@@ -81,3 +81,11 @@
   text-align: right;
   white-space: nowrap;
 }
+
+/* ---------- 5. CTA embutido no vídeo (Panda Video) ---------- */
+/* Escondido até o vídeo terminar; o JS embutido no player muda pra
+   display:block via panda_ended (ver comentário junto do embed). */
+#f86c3daa-4903-428f-b756-dd0ef5176a06 {
+  display: none;
+  margin-top: 20px;
+}
