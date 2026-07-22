@@ -82,10 +82,30 @@
   white-space: nowrap;
 }
 
-/* ---------- 5. CTA embutido no vídeo (Panda Video) ---------- */
-/* Escondido até o vídeo terminar; o JS embutido no player muda pra
-   display:block via panda_ended (ver comentário junto do embed). */
+/* ---------- 5. CTA do vídeo (botão próprio, dados buscados da Panda) ---------- */
+/* Escondido até o vídeo alcançar 7min07s (ou localStorage indicar visita
+   recorrente); o JS junto do embed muda pra display:flex nesse momento. */
 #f86c3daa-4903-428f-b756-dd0ef5176a06 {
   display: none;
+  justify-content: center;
   margin-top: 20px;
+}
+
+.upsell-cta-button {
+  border: none;
+  border-radius: 10px;
+  padding: 20px 48px;
+  font-family: var(--font-family);
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  max-width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+@media (max-width: 480px) {
+  .upsell-cta-button {
+    padding: 14px 32px;
+    font-size: 1rem;
+  }
 }

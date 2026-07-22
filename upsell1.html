@@ -54,34 +54,78 @@
 
       <!-- ============ 4. VÍDEO DE UPSELL (embed real do Panda Video) ============ -->
       <!-- Uma única instanciação do PandaPlayer pra esse id, com onReady mesclando
-           loadWindowScreen (do embed) + loadButtonInTime/setParentWindowUrl (do CTA
-           embutido) — duas instâncias separadas pro mesmo iframe criariam dois
-           listeners de "message" independentes escutando o mesmo player. -->
-      <div style="position:relative;padding-top:56.25%;"><iframe id="panda-26f48aa6-b264-4f01-b715-686047419eca" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca&iosFakeFullscreen=true" style="border:none;position:absolute;top:0;left:0;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen=true width="100%" height="100%" fetchpriority="high"></iframe><script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-26f48aa6-b264-4f01-b715-686047419eca';const CTA_TIME_SECONDS=427;const CTA_CONTAINER_ID='f86c3daa-4903-428f-b756-dd0ef5176a06';const CTA_STORAGE_KEY='upsell1_cta_shown';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});p.loadButtonInTime({fetchApi:true});p.setParentWindowUrl();var ctaContainer=document.getElementById(CTA_CONTAINER_ID);var ctaShown=false;function neuterRemoval(el){if(el)el.remove=function(){};}neuterRemoval(document.getElementById(CTA_CONTAINER_ID+'_iframe'));if(ctaContainer&&window.MutationObserver){new MutationObserver(function(){if(ctaShown)neuterRemoval(document.getElementById(CTA_CONTAINER_ID+'_iframe'));}).observe(ctaContainer,{childList:true});}var showCta=function(){if(ctaShown)return;ctaShown=true;try{localStorage.setItem(CTA_STORAGE_KEY,'1');}catch(e){}if(ctaContainer)ctaContainer.style.display='block';neuterRemoval(document.getElementById(CTA_CONTAINER_ID+'_iframe'));};try{if(localStorage.getItem(CTA_STORAGE_KEY)==='1')showCta();}catch(e){}p.onEvent(function(e){if(e.message==='panda_timeupdate'&&e.currentTime>=CTA_TIME_SECONDS){showCta();return;}if(e.message==='panda_ended'){showCta();}});}});})</script></div>
+           loadWindowScreen (do embed) + setParentWindowUrl — duas instâncias
+           separadas pro mesmo iframe criariam dois listeners de "message"
+           independentes escutando o mesmo player.
+
+           loadButtonInTime NÃO é mais chamado de propósito: era o mecanismo
+           nativo da Panda que injetava o botão real dentro do container,
+           mas só o fazia quando currentTime estava dentro da janela de tempo
+           configurada no painel — o que, além de causar o bug do botão sumir
+           no loop (corrigido antes com um MutationObserver neutralizando o
+           .remove()), também deixava o container vazio num F5 da página,
+           já que o vídeo reinicia do zero e a janela nunca tinha sido
+           alcançada ainda no momento do load. Substituído pela abordagem
+           abaixo: buscamos os dados reais do botão (texto/link/cores) direto
+           do endpoint de configuração da Panda e construímos nosso próprio
+           botão, populado assim que a página carrega — sem depender do
+           timing do vídeo pra ter conteúdo. -->
+      <div style="position:relative;padding-top:56.25%;"><iframe id="panda-26f48aa6-b264-4f01-b715-686047419eca" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca&iosFakeFullscreen=true" style="border:none;position:absolute;top:0;left:0;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen=true width="100%" height="100%" fetchpriority="high"></iframe><script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-26f48aa6-b264-4f01-b715-686047419eca';const CTA_TIME_SECONDS=427;const CTA_CONTAINER_ID='f86c3daa-4903-428f-b756-dd0ef5176a06';const CTA_STORAGE_KEY='upsell1_cta_shown';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});p.setParentWindowUrl();var ctaContainer=document.getElementById(CTA_CONTAINER_ID);var ctaShown=false;var showCta=function(){if(ctaShown)return;ctaShown=true;try{localStorage.setItem(CTA_STORAGE_KEY,'1');}catch(e){}if(ctaContainer)ctaContainer.style.display='flex';};try{if(localStorage.getItem(CTA_STORAGE_KEY)==='1')showCta();}catch(e){}p.onEvent(function(e){if(e.message==='panda_timeupdate'&&e.currentTime>=CTA_TIME_SECONDS){showCta();return;}if(e.message==='panda_ended'){showCta();}});}});})</script></div>
       <!-- Aparece a partir de 7min07s (427s) de posição de reprodução — via
            panda_timeupdate, então também funciona se o usuário adiantar a barra
            direto pra depois desse ponto, não só assistindo em sequência.
            panda_ended fica só como salvaguarda (vídeo mais curto que 427s).
            Uma vez mostrado, fica visível pra sempre (persistido em localStorage,
            sobrevive a reload da página) — pause/retroceder/replay/loop depois
-           disso não escondem de novo.
-
-           IMPORTANTE: loadButtonInTime continua sendo chamado de propósito —
-           é o que busca e injeta o conteúdo real do botão (configurado no
-           painel da Panda), não é código morto. O problema era outro: esse
-           mecanismo nativo cria um <iframe id="{id}_iframe"> com o botão de
-           verdade dentro deste container, e o REMOVE sempre que currentTime
-           sai da janela de tempo configurada no painel — o que inclui o
-           momento em que o vídeo dá loop e currentTime volta pra perto de 0.
-           Por isso o botão "sumia": o container continuava com display:block,
-           mas ficava vazio por dentro. A correção neutraliza o .remove()
-           desse iframe assim que decidimos mostrar o CTA — a Panda continua
-           tentando removê-lo no loop, mas a chamada vira um no-op. -->
+           disso não escondem de novo. O conteúdo (botão) é construído pelo
+           script logo abaixo, buscando o texto/link/cores reais direto da
+           configuração da Panda — já populado desde o carregamento da
+           página, independente de quando (ou se) o container é revelado. -->
       <div id="f86c3daa-4903-428f-b756-dd0ef5176a06"></div>
 
     </div>
   </section>
 </main>
+
+<script>
+  // Constrói nosso próprio botão de CTA a partir dos dados reais configurados
+  // no painel da Panda (texto, link de destino, cores) — buscados direto do
+  // mesmo endpoint de config já pré-carregado no <head>. Roda independente
+  // do estado/tempo do vídeo, então o botão já está pronto (com conteúdo
+  // real) desde o load da página, e a exibição (controlada pelo script do
+  // player, acima) só precisa alternar um display:flex/none.
+  (function () {
+    'use strict';
+    var CONFIG_URL = 'https://config.tv.pandavideo.com.br/vz-52703098-ed8/26f48aa6-b264-4f01-b715-686047419eca.json';
+    var CONTAINER_ID = 'f86c3daa-4903-428f-b756-dd0ef5176a06';
+
+    fetch(CONFIG_URL)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var cta = data && data.outsideCta && data.outsideCta[0];
+        var meta = cta && cta.metadata;
+        var link = meta && meta.link;
+        if (!cta || !link) return;
+
+        var bg = meta.backgroundColor || '#00bd16';
+        var bgHover = meta.backgroundHover || bg;
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'upsell-cta-button';
+        btn.textContent = cta.title || meta.title || 'Quero garantir minha oferta';
+        btn.style.backgroundColor = bg;
+        btn.style.color = meta.textColor || '#FFFFFF';
+        btn.addEventListener('mouseenter', function () { btn.style.backgroundColor = bgHover; });
+        btn.addEventListener('mouseleave', function () { btn.style.backgroundColor = bg; });
+        btn.addEventListener('click', function () { window.open(link, '_blank'); });
+
+        var container = document.getElementById(CONTAINER_ID);
+        if (container) container.appendChild(btn);
+      })
+      .catch(function (e) { console.error('Upsell CTA: falha ao buscar configuração do botão', e); });
+  })();
+</script>
 
 </body>
 </html>
