@@ -53,7 +53,12 @@
       <p class="upsell-context">Você só verá essa página <strong>uma única vez</strong>... Assista agora o rápido vídeo abaixo:</p>
 
       <!-- ============ 4. VÍDEO DE UPSELL (embed real do Panda Video) ============ -->
-      <div style="position:relative;padding-top:56.25%;"><iframe id="panda-26f48aa6-b264-4f01-b715-686047419eca" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca&iosFakeFullscreen=true" style="border:none;position:absolute;top:0;left:0;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen=true width="100%" height="100%" fetchpriority="high"></iframe><script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-26f48aa6-b264-4f01-b715-686047419eca';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});}});})</script></div>
+      <!-- Uma única instanciação do PandaPlayer pra esse id, com onReady mesclando
+           loadWindowScreen (do embed) + loadButtonInTime/setParentWindowUrl (do CTA
+           embutido) — duas instâncias separadas pro mesmo iframe criariam dois
+           listeners de "message" independentes escutando o mesmo player. -->
+      <div style="position:relative;padding-top:56.25%;"><iframe id="panda-26f48aa6-b264-4f01-b715-686047419eca" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca&iosFakeFullscreen=true" style="border:none;position:absolute;top:0;left:0;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen=true width="100%" height="100%" fetchpriority="high"></iframe><script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-26f48aa6-b264-4f01-b715-686047419eca';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});p.loadButtonInTime({fetchApi:true});p.setParentWindowUrl();}});})</script></div>
+      <div id="f86c3daa-4903-428f-b756-dd0ef5176a06"></div>
 
     </div>
   </section>
