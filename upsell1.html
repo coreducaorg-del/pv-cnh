@@ -57,13 +57,26 @@
            loadWindowScreen (do embed) + loadButtonInTime/setParentWindowUrl (do CTA
            embutido) — duas instâncias separadas pro mesmo iframe criariam dois
            listeners de "message" independentes escutando o mesmo player. -->
-      <div style="position:relative;padding-top:56.25%;"><iframe id="panda-26f48aa6-b264-4f01-b715-686047419eca" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca&iosFakeFullscreen=true" style="border:none;position:absolute;top:0;left:0;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen=true width="100%" height="100%" fetchpriority="high"></iframe><script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-26f48aa6-b264-4f01-b715-686047419eca';const CTA_TIME_SECONDS=427;const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});p.loadButtonInTime({fetchApi:true});p.setParentWindowUrl();var ctaShown=false;var showCta=function(){if(ctaShown)return;ctaShown=true;var ctaEl=document.getElementById('f86c3daa-4903-428f-b756-dd0ef5176a06');if(ctaEl)ctaEl.style.display='block';};p.onEvent(function(e){if(e.message==='panda_timeupdate'&&e.currentTime>=CTA_TIME_SECONDS){showCta();return;}if(e.message==='panda_ended'){showCta();}});}});})</script></div>
+      <div style="position:relative;padding-top:56.25%;"><iframe id="panda-26f48aa6-b264-4f01-b715-686047419eca" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca&iosFakeFullscreen=true" style="border:none;position:absolute;top:0;left:0;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen=true width="100%" height="100%" fetchpriority="high"></iframe><script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-26f48aa6-b264-4f01-b715-686047419eca';const CTA_TIME_SECONDS=427;const CTA_CONTAINER_ID='f86c3daa-4903-428f-b756-dd0ef5176a06';const CTA_STORAGE_KEY='upsell1_cta_shown';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});p.loadButtonInTime({fetchApi:true});p.setParentWindowUrl();var ctaContainer=document.getElementById(CTA_CONTAINER_ID);var ctaShown=false;function neuterRemoval(el){if(el)el.remove=function(){};}neuterRemoval(document.getElementById(CTA_CONTAINER_ID+'_iframe'));if(ctaContainer&&window.MutationObserver){new MutationObserver(function(){if(ctaShown)neuterRemoval(document.getElementById(CTA_CONTAINER_ID+'_iframe'));}).observe(ctaContainer,{childList:true});}var showCta=function(){if(ctaShown)return;ctaShown=true;try{localStorage.setItem(CTA_STORAGE_KEY,'1');}catch(e){}if(ctaContainer)ctaContainer.style.display='block';neuterRemoval(document.getElementById(CTA_CONTAINER_ID+'_iframe'));};try{if(localStorage.getItem(CTA_STORAGE_KEY)==='1')showCta();}catch(e){}p.onEvent(function(e){if(e.message==='panda_timeupdate'&&e.currentTime>=CTA_TIME_SECONDS){showCta();return;}if(e.message==='panda_ended'){showCta();}});}});})</script></div>
       <!-- Aparece a partir de 7min07s (427s) de posição de reprodução — via
            panda_timeupdate, então também funciona se o usuário adiantar a barra
            direto pra depois desse ponto, não só assistindo em sequência.
            panda_ended fica só como salvaguarda (vídeo mais curto que 427s).
-           Uma vez mostrado, fica visível pra sempre — pause/retroceder/replay
-           depois disso não escondem de novo (showCta() é idempotente via ctaShown). -->
+           Uma vez mostrado, fica visível pra sempre (persistido em localStorage,
+           sobrevive a reload da página) — pause/retroceder/replay/loop depois
+           disso não escondem de novo.
+
+           IMPORTANTE: loadButtonInTime continua sendo chamado de propósito —
+           é o que busca e injeta o conteúdo real do botão (configurado no
+           painel da Panda), não é código morto. O problema era outro: esse
+           mecanismo nativo cria um <iframe id="{id}_iframe"> com o botão de
+           verdade dentro deste container, e o REMOVE sempre que currentTime
+           sai da janela de tempo configurada no painel — o que inclui o
+           momento em que o vídeo dá loop e currentTime volta pra perto de 0.
+           Por isso o botão "sumia": o container continuava com display:block,
+           mas ficava vazio por dentro. A correção neutraliza o .remove()
+           desse iframe assim que decidimos mostrar o CTA — a Panda continua
+           tentando removê-lo no loop, mas a chamada vira um no-op. -->
       <div id="f86c3daa-4903-428f-b756-dd0ef5176a06"></div>
 
     </div>
