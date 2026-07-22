@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br">
+<link rel="dns-prefetch" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="upsell.css">
@@ -38,77 +39,12 @@
       <p class="upsell-context-italic">BEM VINDO AO MINI-CURSO!</p>
       <p class="upsell-context">Você só verá essa página <strong>uma única vez</strong>... Assista agora o rápido vídeo abaixo:</p>
 
-      <!-- ============ 4. VÍDEO DE UPSELL (facade — aguardando embed real do Panda Video) ============ -->
-      <div class="upsell-video-embed" data-panda-facade data-vz="" data-video-id="" role="button" tabindex="0" aria-label="Reproduzir vídeo">
-        <p class="upsell-video-placeholder-text">[EMBED DO VÍDEO DE UPSELL AQUI]</p>
-        <button type="button" class="panda-play-btn" tabindex="-1" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
-        </button>
-      </div>
+      <!-- ============ 4. VÍDEO DE UPSELL (embed real do Panda Video) ============ -->
+      <div style="position:relative;padding-top:56.25%;"><iframe id="panda-26f48aa6-b264-4f01-b715-686047419eca" src="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca&iosFakeFullscreen=true" style="border:none;position:absolute;top:0;left:0;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen=true width="100%" height="100%" fetchpriority="high"></iframe><script>if(!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')){let s=document.createElement('script');s.src='https://player.pandavideo.com.br/api.v2.js'; s.async=true; document.head.appendChild(s);} window.pandascripttag = window.pandascripttag || [];window.pandascripttag.push(function (){const panda_id_player = 'panda-26f48aa6-b264-4f01-b715-686047419eca';const p=new PandaPlayer(panda_id_player,{onReady(){p.loadWindowScreen({panda_id_player});}});})</script></div>
 
     </div>
   </section>
 </main>
-
-<script>
-  // Facade do vídeo de upsell — mesmo padrão da página principal (carrega o
-  // iframe do Panda só no clique). data-vz/data-video-id ainda estão vazios
-  // (embed real a ser enviado depois); nesse caso o clique não faz nada, só
-  // a estrutura já fica pronta pra funcionar assim que os IDs reais entrarem.
-  (function () {
-    'use strict';
-
-    function loadPandaEmbed(container) {
-      var videoId = container.getAttribute('data-video-id');
-      var vz = container.getAttribute('data-vz');
-      if (!videoId || !vz) return;
-
-      var playerId = 'panda-' + videoId;
-      var playBtn = container.querySelector('.panda-play-btn');
-      if (playBtn) playBtn.remove();
-      var placeholder = container.querySelector('.upsell-video-placeholder-text');
-      if (placeholder) placeholder.remove();
-
-      var iframe = document.createElement('iframe');
-      iframe.id = playerId;
-      iframe.src = 'https://player-vz-' + vz + '.tv.pandavideo.com.br/embed/?v=' + videoId + '&autoplay=true';
-      iframe.style.border = 'none';
-      iframe.setAttribute('allow', 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture');
-      iframe.setAttribute('allowfullscreen', 'true');
-      iframe.setAttribute('fetchpriority', 'high');
-      container.appendChild(iframe);
-
-      container.removeAttribute('data-panda-facade');
-      container.removeAttribute('role');
-      container.removeAttribute('tabindex');
-      container.removeAttribute('aria-label');
-
-      if (!document.querySelector('script[src="https://player.pandavideo.com.br/api.v2.js"]')) {
-        var s = document.createElement('script');
-        s.src = 'https://player.pandavideo.com.br/api.v2.js';
-        s.async = true;
-        document.head.appendChild(s);
-      }
-      window.pandascripttag = window.pandascripttag || [];
-      window.pandascripttag.push(function () {
-        new PandaPlayer(playerId, { onReady: function () {} });
-      });
-    }
-
-    document.querySelectorAll('[data-panda-facade]').forEach(function (facade) {
-      function activate(event) {
-        loadPandaEmbed(facade);
-      }
-      facade.addEventListener('click', activate, { once: true });
-      facade.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          activate(event);
-        }
-      });
-    });
-  })();
-</script>
 
 </body>
 </html>
