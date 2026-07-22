@@ -2,6 +2,20 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+
+<!-- Preloads/prefetch do player Panda Video (sugestão da própria Panda) —
+     antecipam recursos que essa página já ia carregar assim que abrisse,
+     já que o vídeo aqui é embutido direto, sem facade/lazy-load. -->
+<link rel="preload" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/css/plyr.css" as="style">
+<link rel="preload" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/css/styles.css" as="style">
+<link rel="preload" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/css/pb.css" as="style">
+<link rel="preload" href="https://config.tv.pandavideo.com.br/vz-52703098-ed8/26f48aa6-b264-4f01-b715-686047419eca.json" as="fetch">
+<link rel="preload" href="https://config.tv.pandavideo.com.br/vz-52703098-ed8/config.json" as="fetch">
+<link rel="dns-prefetch" href="https://b-vz-52703098-ed8.tv.pandavideo.com.br">
+<link rel="preload" href="https://b-vz-52703098-ed8.tv.pandavideo.com.br/26f48aa6-b264-4f01-b715-686047419eca/playlist.m3u8" as="fetch">
+<link rel="prerender" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br/embed/?v=26f48aa6-b264-4f01-b715-686047419eca">
+<link rel="dns-prefetch" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>Espere! Não saia ainda — Coreano na Hora</title>
@@ -10,7 +24,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br">
-<link rel="dns-prefetch" href="https://player-vz-52703098-ed8.tv.pandavideo.com.br">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="upsell.css">
