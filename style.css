@@ -197,19 +197,22 @@ ul {
   display: block;
 }
 
-/* Setas do carrossel do hero: sobrepostas na própria imagem (sem reservar
-   padding lateral, pra não reduzir a largura da imagem) — por isso usam
-   fundo semi-transparente em vez do branco sólido do carrossel de
-   depoimentos, garantindo contraste sobre qualquer imagem de fundo. */
-.hero-carousel .carousel-arrow {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(2px);
-}
-.hero-carousel .carousel-arrow--prev {
-  left: 8px;
-}
-.hero-carousel .carousel-arrow--next {
-  right: 8px;
+/* Setas do carrossel do hero: reaproveitam o estilo do carrossel de
+   depoimentos (fundo branco sólido, ícone/borda azul via .carousel-arrow
+   já compartilhado) — sem override de cor aqui, só de posição.
+
+   Em mobile não há espaço sobrando entre a imagem (que preenche a largura
+   do container) e a borda da tela, então as setas ficam levemente sobre a
+   borda da imagem (mesma posição left:0/right:0 já herdada do carrossel de
+   depoimentos). A partir de 768px, o container tem folga suficiente pra
+   colocá-las de fato fora do card. */
+@media (min-width: 768px) {
+  .hero-carousel .carousel-arrow--prev {
+    left: -48px;
+  }
+  .hero-carousel .carousel-arrow--next {
+    right: -48px;
+  }
 }
 
 /* ---------- Ritmo vertical exclusivo do hero (não afeta outras seções) ---------- */
