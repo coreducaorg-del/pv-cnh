@@ -278,6 +278,91 @@
   document.querySelectorAll('[data-carousel]').forEach(initCarousel);
 
   // ==========================================================================
+  // Carrossel do hero — crossfade simples (sem "peek"/drag/medição de
+  // largura como o de depoimentos), pra ficar o mais leve possível: os 3
+  // slides ficam empilhados (position:absolute) e alternam via opacity.
+  //
+  // Os slides 2 e 3 começam com display:none inline no HTML (não é a
+  // classe/opacity que os esconde) de propósito — assim eles ficam fora do
+  // layout/geometria da página até este script rodar, evitando que o
+  // carregamento nativo (loading="lazy") deles compita com o slide 1 (LCP,
+  // fetchpriority="high") logo no início do carregamento da página.
+  // ==========================================================================
+  function initHeroCarousel(root) {
+    var slides = Array.prototype.slice.call(root.querySelectorAll('[data-hero-slide]'));
+    var dots = Array.prototype.slice.call(root.querySelectorAll('[data-hero-dot]'));
+    var prevBtn = root.querySelector('[data-hero-carousel-prev]');
+    var nextBtn = root.querySelector('[data-hero-carousel-next]');
+    if (!slides.length) return;
+
+    var AUTOPLAY_MS = 3500;
+    var RESUME_DELAY_MS = 5000; // após clique/swipe manual, espera antes de retomar o autoplay
+    var current = 0;
+    var autoplayTimer = null;
+    var resumeTimer = null;
+
+    slides.forEach(function (slide) { slide.style.display = ''; });
+
+    function render() {
+      slides.forEach(function (slide, i) {
+        slide.setAttribute('data-active', i === current ? 'true' : 'false');
+      });
+      dots.forEach(function (dot, i) {
+        dot.setAttribute('data-active', i === current ? 'true' : 'false');
+      });
+    }
+
+    function goTo(index) {
+      current = ((index % slides.length) + slides.length) % slides.length;
+      render();
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function stopAutoplay() {
+      clearInterval(autoplayTimer);
+    }
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayTimer = setInterval(next, AUTOPLAY_MS);
+    }
+    function pauseAutoplayTemporarily() {
+      stopAutoplay();
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(startAutoplay, RESUME_DELAY_MS);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { prev(); pauseAutoplayTemporarily(); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { next(); pauseAutoplayTemporarily(); });
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { goTo(i); pauseAutoplayTemporarily(); });
+    });
+
+    // swipe simples em mobile — secundário, só um threshold de distância
+    // horizontal no touchend, sem preview/drag em tempo real (mantém leve)
+    var touchStartX = 0;
+    var isTouching = false;
+    root.addEventListener('touchstart', function (e) {
+      isTouching = true;
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (!isTouching) return;
+      isTouching = false;
+      var deltaX = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(deltaX) < 40) return;
+      if (deltaX < 0) { next(); } else { prev(); }
+      pauseAutoplayTemporarily();
+    });
+
+    render();
+    startAutoplay();
+  }
+
+  document.querySelectorAll('[data-hero-carousel]').forEach(initHeroCarousel);
+
+  // ==========================================================================
   // Facade dos vídeos de depoimento (Panda Video): o iframe/player só é
   // criado no clique/teque, pra não pagar o custo de rede+JS de dois players
   // de vídeo logo no carregamento da página quando o usuário talvez nem
