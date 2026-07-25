@@ -168,49 +168,71 @@ ul {
   line-height: 1;
 }
 
+/* Largura da imagem FIXA em pixels (não percentual) em todas as telas
+   mobile (abaixo de 768px) — de propósito, pra não variar entre aparelhos
+   diferentes (ex: 375/414/430px de largura mostravam tamanhos ligeiramente
+   diferentes com % antes). As duas colunas de seta (32px cada, reservadas
+   via flexbox) também são fixas, então a soma [seta+imagem+seta] fica
+   idêntica em qualquer smartphone — só muda a partir de 768px (ver media
+   query abaixo), onde o container tem espaço de sobra e a imagem volta a
+   ocupar até 480px, com as setas soltas fora do card. */
 .hero-carousel {
-  position: relative;
   width: 100%;
   max-width: 480px;
-  margin: 24px auto 0;
+  margin: 16px auto 0;
+}
+.hero-carousel-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 .hero-carousel-track {
   position: relative;
-  width: 100%;
+  flex: 0 0 240px;
+  width: 240px;
   aspect-ratio: 5 / 4;
-}
-.hero-carousel-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-.hero-carousel-slide[data-active="true"] {
-  opacity: 1;
-  pointer-events: auto;
 }
 .hero-mockup-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
+  opacity: 1;
+  transition: opacity 0.25s ease;
 }
 
-/* Setas do carrossel do hero: reaproveitam o estilo do carrossel de
-   depoimentos (fundo branco sólido, ícone/borda azul via .carousel-arrow
-   já compartilhado) — sem override de cor aqui, só de posição.
+/* Em mobile as setas são colunas normais do flexbox (não mais sobrepostas
+   por cima da imagem) — reaproveitam a cor/estilo de .carousel-arrow
+   (fundo branco, ícone/borda azul), só a posição/tamanho muda aqui. */
+.hero-carousel-row .carousel-arrow {
+  position: static;
+  transform: none;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+}
 
-   Em mobile não há espaço sobrando entre a imagem (que preenche a largura
-   do container) e a borda da tela, então as setas ficam levemente sobre a
-   borda da imagem (mesma posição left:0/right:0 já herdada do carrossel de
-   depoimentos). A partir de 768px, o container tem folga suficiente pra
-   colocá-las de fato fora do card. */
+/* A partir de 768px: imagem volta a ser flexível (até 480px) e as setas
+   saem da coluna reservada do flexbox pra ficar de fato fora do card,
+   via position:absolute — igual ao carrossel de depoimentos. */
 @media (min-width: 768px) {
-  .hero-carousel .carousel-arrow--prev {
+  .hero-carousel-track {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  .hero-carousel-row .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+  }
+  .hero-carousel-row .carousel-arrow--prev {
     left: -48px;
   }
-  .hero-carousel .carousel-arrow--next {
+  .hero-carousel-row .carousel-arrow--next {
     right: -48px;
   }
 }
@@ -246,10 +268,6 @@ ul {
   #hero h1 {
     font-size: 24.5px;
     line-height: 1.15;
-  }
-  #hero .hero-carousel {
-    width: 68%;
-    margin-top: 16px;
   }
   #hero .lede {
     margin-top: 28px;

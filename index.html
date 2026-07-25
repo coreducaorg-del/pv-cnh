@@ -55,23 +55,24 @@ ul{margin:0 0 16px;padding-left:20px}
 .urgency-bar{position:fixed;top:0;left:0;width:100%;z-index:9999;min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--danger);color:var(--text-on-dark);text-align:center;padding:8px 16px}
 .urgency-bar p{margin:0;font-size:0.8125rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .urgency-bar [data-urgency-timer]{display:inline-block;margin-left:4px;background:rgba(255,255,255,0.95);color:#7A0A22;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-weight:800;font-variant-numeric:tabular-nums;border-radius:7px;padding:4px 10px;line-height:1}
-.hero-carousel{position:relative;width:100%;max-width:480px;margin:24px auto 0}
-.hero-carousel-track{position:relative;width:100%;aspect-ratio:5/4}
-.hero-carousel-slide{position:absolute;inset:0;opacity:0;transition:opacity 0.6s ease;pointer-events:none}
-.hero-carousel-slide[data-active="true"]{opacity:1;pointer-events:auto}
-.hero-mockup-img{width:100%;height:100%;object-fit:contain;display:block}
+.hero-carousel{width:100%;max-width:480px;margin:16px auto 0}
+.hero-carousel-row{position:relative;display:flex;align-items:center;justify-content:center;gap:6px}
+.hero-carousel-track{position:relative;flex:0 0 240px;width:240px;aspect-ratio:5/4}
+.hero-mockup-img{width:100%;height:100%;object-fit:contain;display:block;opacity:1;transition:opacity 0.25s ease}
 .carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:40px;height:40px}
 .carousel-arrow--prev{left:0}
 .carousel-arrow--next{right:0}
+.hero-carousel-row .carousel-arrow{position:static;transform:none;flex:0 0 32px;width:32px;height:32px}
 .carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:20px;width:100%}
 .carousel-dot{width:8px;height:8px;border-radius:50%;border:none;padding:0}
+@media (min-width:768px){.hero-carousel-track{flex:1 1 auto;width:100%}.hero-carousel-row .carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px}.hero-carousel-row .carousel-arrow--prev{left:-48px}.hero-carousel-row .carousel-arrow--next{right:-48px}}
 #hero.section{padding-bottom:40px}
 #hero h1{margin-bottom:0}
 #hero .lede{margin:24px 0 0}
 #hero .checklist{margin:16px 0 0}
 #hero .checklist li{padding:4px 0 4px 30px}
 #hero .btn-primary{margin-top:32px}
-@media (max-width:480px){#hero.section{padding-top:20px;padding-bottom:24px}#hero h1{font-size:24.5px;line-height:1.15}#hero .hero-carousel{width:68%;margin-top:16px}#hero .lede{margin-top:28px;font-size:1rem}#hero .checklist{margin-top:10px}#hero .checklist li{font-size:0.875rem;padding:2px 0 2px 26px}#hero .btn-primary{margin-top:28px}}
+@media (max-width:480px){#hero.section{padding-top:20px;padding-bottom:24px}#hero h1{font-size:24.5px;line-height:1.15}#hero .lede{margin-top:28px;font-size:1rem}#hero .checklist{margin-top:10px}#hero .checklist li{font-size:0.875rem;padding:2px 0 2px 26px}#hero .btn-primary{margin-top:28px}}
 .btn-primary{display:inline-block;font-family:var(--font-family);font-size:1.125rem;font-weight:700;line-height:1;color:var(--text-on-dark);text-decoration:none;text-align:center;padding:22px 30px;border:none;border-radius:var(--radius-button);cursor:pointer;width:100%;background-image:radial-gradient(38.67% 91.17% at 50% 8.83%,var(--primary) 0%,var(--gradient-end) 100%);box-shadow:rgba(0,52,120,0.5) 0px 0px 20px 0px,rgba(30,91,184,0.4) 0px 0px 40px 0px,rgba(0,52,120,0.25) 0px 10px 25px 0px;transition:0.5s}
 @media (min-width:768px){h1{font-size:2.125rem;line-height:2.5625rem}}
 
@@ -113,31 +114,19 @@ ul{margin:0 0 16px;padding-left:20px}
       <h1>Aprenda o <span class="highlight-blue">Coreano nativo</span> dos Doramas em <span class="highlight-blue">menos de 2h</span></h1>
 
       <div class="hero-carousel" data-hero-carousel>
-        <div class="hero-carousel-track">
-          <div class="hero-carousel-slide" data-hero-slide data-active="true">
-            <picture>
-              <source srcset="assets/hero/hero-slide-2.avif" type="image/avif">
-              <source srcset="assets/hero/hero-slide-2.webp" type="image/webp">
-              <img class="hero-mockup-img" src="assets/hero/hero-slide-2.png" alt="Coreano realmente falado na Coreia por R$37" width="960" height="666" fetchpriority="high" decoding="async">
-            </picture>
-          </div>
-          <div class="hero-carousel-slide" data-hero-slide style="display:none">
-            <picture>
-              <source srcset="assets/hero/hero-slide-3.avif" type="image/avif">
-              <source srcset="assets/hero/hero-slide-3.webp" type="image/webp">
-              <img class="hero-mockup-img" src="assets/hero/hero-slide-3.png" alt="Método aprovado por mais de 1200 alunas brasileiras" width="960" height="666" loading="lazy">
-            </picture>
-          </div>
-          <div class="hero-carousel-slide" data-hero-slide style="display:none">
-            <picture>
-              <source srcset="assets/hero/mockup-produto.avif" type="image/avif">
-              <img class="hero-mockup-img" src="assets/hero/mockup-produto.png" alt="Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso" width="960" height="768" loading="lazy">
-            </picture>
-          </div>
-        </div>
+        <div class="hero-carousel-row">
+          <button type="button" class="carousel-arrow carousel-arrow--prev" data-hero-carousel-prev aria-label="Slide anterior">&#8592;</button>
 
-        <button type="button" class="carousel-arrow carousel-arrow--prev" data-hero-carousel-prev aria-label="Slide anterior">&#8592;</button>
-        <button type="button" class="carousel-arrow carousel-arrow--next" data-hero-carousel-next aria-label="Próximo slide">&#8594;</button>
+          <div class="hero-carousel-track">
+            <picture>
+              <source data-hero-source="avif" srcset="assets/hero/hero-slide-2.avif" type="image/avif">
+              <source data-hero-source="webp" srcset="assets/hero/hero-slide-2.webp" type="image/webp">
+              <img data-hero-img class="hero-mockup-img" src="assets/hero/hero-slide-2.png" alt="Coreano realmente falado na Coreia por R$37" width="960" height="666" fetchpriority="high" decoding="async">
+            </picture>
+          </div>
+
+          <button type="button" class="carousel-arrow carousel-arrow--next" data-hero-carousel-next aria-label="Próximo slide">&#8594;</button>
+        </div>
 
         <div class="carousel-dots">
           <button type="button" class="carousel-dot" data-hero-dot data-active="true" aria-label="Ir para slide 1"></button>

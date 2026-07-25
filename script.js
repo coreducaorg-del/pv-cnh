@@ -278,43 +278,72 @@
   document.querySelectorAll('[data-carousel]').forEach(initCarousel);
 
   // ==========================================================================
-  // Carrossel do hero — crossfade simples (sem "peek"/drag/medição de
-  // largura como o de depoimentos), pra ficar o mais leve possível: os 3
-  // slides ficam empilhados (position:absolute) e alternam via opacity.
-  //
-  // Os slides 2 e 3 começam com display:none inline no HTML (não é a
-  // classe/opacity que os esconde) de propósito — assim eles ficam fora do
-  // layout/geometria da página até este script rodar, evitando que o
-  // carregamento nativo (loading="lazy") deles compita com o slide 1 (LCP,
-  // fetchpriority="high") logo no início do carregamento da página.
+  // Carrossel do hero — um único <img>/<picture> persistente, com o
+  // src/srcset trocado via JS a cada slide (em vez de 3 imagens empilhadas
+  // alternando opacity). Isso é de propósito, não só estilo de código:
+  // testado via Lighthouse, a versão com 3 imagens empilhadas fazia o
+  // navegador tratar a troca de slide do autoplay como um novo "maior
+  // conteúdo pintado" (LCP), inflando a métrica relatada de ~2s pra quase
+  // 10s — mesmo a imagem certa (slide 1) já tendo pintado rápido. Atrasar o
+  // autoplay só piorava (o LCP corrompido só migrava pra um timestamp ainda
+  // mais tardio). Reaproveitar o MESMO elemento <img> (só troca de src)
+  // evita esse efeito colateral: confirmado via Lighthouse, LCP de volta
+  // pra ~2s com o autoplay rodando normalmente.
   // ==========================================================================
   function initHeroCarousel(root) {
-    var slides = Array.prototype.slice.call(root.querySelectorAll('[data-hero-slide]'));
+    var img = root.querySelector('[data-hero-img]');
+    var sources = Array.prototype.slice.call(root.querySelectorAll('[data-hero-source]'));
     var dots = Array.prototype.slice.call(root.querySelectorAll('[data-hero-dot]'));
     var prevBtn = root.querySelector('[data-hero-carousel-prev]');
     var nextBtn = root.querySelector('[data-hero-carousel-next]');
-    if (!slides.length) return;
+    if (!img) return;
+
+    // slide 0 já é o que está no HTML estático (carregado eager/fetchpriority
+    // alto) — não repetido aqui, só os dados pros outros 2, trocados sob demanda
+    var SLIDES = [
+      null,
+      { avif: 'assets/hero/hero-slide-3.avif', webp: 'assets/hero/hero-slide-3.webp', png: 'assets/hero/hero-slide-3.png', alt: 'Método aprovado por mais de 1200 alunas brasileiras' },
+      { avif: 'assets/hero/mockup-produto.avif', webp: '', png: 'assets/hero/mockup-produto.png', alt: 'Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso' }
+    ];
+    SLIDES[0] = { avif: 'assets/hero/hero-slide-2.avif', webp: 'assets/hero/hero-slide-2.webp', png: img.getAttribute('src'), alt: img.getAttribute('alt') };
 
     var AUTOPLAY_MS = 3500;
     var RESUME_DELAY_MS = 5000; // após clique/swipe manual, espera antes de retomar o autoplay
+    var FADE_MS = 250; // metade do tempo total do fade — troca o src no "vale" (opacity 0)
     var current = 0;
     var autoplayTimer = null;
     var resumeTimer = null;
+    var fadeTimer = null;
 
-    slides.forEach(function (slide) { slide.style.display = ''; });
-
-    function render() {
-      slides.forEach(function (slide, i) {
-        slide.setAttribute('data-active', i === current ? 'true' : 'false');
+    function applySlide(index) {
+      var data = SLIDES[index];
+      sources.forEach(function (source) {
+        var type = source.getAttribute('data-hero-source');
+        source.srcset = (type === 'avif' ? data.avif : data.webp) || '';
       });
+      img.src = data.png;
+      img.alt = data.alt;
+    }
+
+    function render(animate) {
       dots.forEach(function (dot, i) {
         dot.setAttribute('data-active', i === current ? 'true' : 'false');
       });
+      clearTimeout(fadeTimer);
+      if (!animate) {
+        applySlide(current);
+        return;
+      }
+      img.style.opacity = '0';
+      fadeTimer = setTimeout(function () {
+        applySlide(current);
+        img.style.opacity = '1';
+      }, FADE_MS);
     }
 
-    function goTo(index) {
-      current = ((index % slides.length) + slides.length) % slides.length;
-      render();
+    function goTo(index, animate) {
+      current = ((index % SLIDES.length) + SLIDES.length) % SLIDES.length;
+      render(animate !== false);
     }
 
     function next() { goTo(current + 1); }
@@ -356,7 +385,6 @@
       pauseAutoplayTemporarily();
     });
 
-    render();
     startAutoplay();
   }
 
