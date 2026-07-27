@@ -55,17 +55,17 @@ ul{margin:0 0 16px;padding-left:20px}
 .urgency-bar{position:fixed;top:0;left:0;width:100%;z-index:9999;min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--danger);color:var(--text-on-dark);text-align:center;padding:8px 16px}
 .urgency-bar p{margin:0;font-size:0.8125rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .urgency-bar [data-urgency-timer]{display:inline-block;margin-left:4px;background:rgba(255,255,255,0.95);color:#7A0A22;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-weight:800;font-variant-numeric:tabular-nums;border-radius:7px;padding:4px 10px;line-height:1}
-.hero-carousel{width:100%;max-width:480px;margin:16px auto 0}
-.hero-carousel-row{position:relative;display:flex;align-items:center;justify-content:center;gap:6px}
-.hero-carousel-track{position:relative;flex:0 0 240px;width:240px;aspect-ratio:5/4}
+.hero-carousel{width:calc(100% + 40px);max-width:560px;margin:16px -20px 0}
+.hero-carousel-row{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-carousel-track{position:relative;flex:0 0 340px;width:340px;aspect-ratio:5/4}
 .hero-mockup-img{width:100%;height:100%;object-fit:contain;display:block;opacity:1;transition:opacity 0.25s ease}
 .carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:40px;height:40px}
 .carousel-arrow--prev{left:0}
 .carousel-arrow--next{right:0}
-.hero-carousel-row .carousel-arrow{position:static;transform:none;flex:0 0 32px;width:32px;height:32px}
+.hero-carousel-row .carousel-arrow{width:36px;height:36px}
 .carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:20px;width:100%}
 .carousel-dot{width:8px;height:8px;border-radius:50%;border:none;padding:0}
-@media (min-width:768px){.hero-carousel-track{flex:1 1 auto;width:100%}.hero-carousel-row .carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px}.hero-carousel-row .carousel-arrow--prev{left:-48px}.hero-carousel-row .carousel-arrow--next{right:-48px}}
+@media (min-width:768px){.hero-carousel-track{flex:1 1 auto;width:100%;max-width:480px}}
 #hero.section{padding-bottom:40px}
 #hero h1{margin-bottom:0}
 #hero .lede{margin:24px 0 0}
@@ -111,7 +111,7 @@ ul{margin:0 0 16px;padding-left:20px}
   <!-- ============ 1. HERO ============ -->
   <section id="hero" class="section">
     <div class="container">
-      <h1>Aprenda o <span class="highlight-blue">Coreano nativo</span> dos Doramas em <span class="highlight-blue">menos de 2h</span></h1>
+      <h1>Aprenda o <span class="highlight-blue">básico do coreano</span> por menos que <span class="highlight-blue">uma pizza 🍕</span></h1>
 
       <div class="hero-carousel" data-hero-carousel>
         <div class="hero-carousel-row">
@@ -119,9 +119,9 @@ ul{margin:0 0 16px;padding-left:20px}
 
           <div class="hero-carousel-track">
             <picture>
-              <source data-hero-source="avif" srcset="assets/hero/hero-slide-2.avif" type="image/avif">
-              <source data-hero-source="webp" srcset="assets/hero/hero-slide-2.webp" type="image/webp">
-              <img data-hero-img class="hero-mockup-img" src="assets/hero/hero-slide-2.png" alt="Coreano realmente falado na Coreia por R$37" width="960" height="666" fetchpriority="high" decoding="async">
+              <source data-hero-source="avif" srcset="assets/hero/hero-slide-3.avif" type="image/avif">
+              <source data-hero-source="webp" srcset="assets/hero/hero-slide-3.webp" type="image/webp">
+              <img data-hero-img class="hero-mockup-img" src="assets/hero/hero-slide-3.png" alt="Método aprovado por mais de 1200 alunas brasileiras" width="960" height="666" fetchpriority="high" decoding="async">
             </picture>
           </div>
 

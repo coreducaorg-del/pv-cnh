@@ -170,28 +170,30 @@ ul {
 
 /* Largura da imagem FIXA em pixels (não percentual) em todas as telas
    mobile (abaixo de 768px) — de propósito, pra não variar entre aparelhos
-   diferentes (ex: 375/414/430px de largura mostravam tamanhos ligeiramente
-   diferentes com % antes). As duas colunas de seta (32px cada, reservadas
-   via flexbox) também são fixas, então a soma [seta+imagem+seta] fica
-   idêntica em qualquer smartphone — só muda a partir de 768px (ver media
-   query abaixo), onde o container tem espaço de sobra e a imagem volta a
-   ocupar até 480px, com as setas soltas fora do card. */
+   diferentes. Em 340px ela já não cabe dentro do padding do .container
+   (que sobra só ~335px de conteúdo em telas de 375px) — por isso o
+   carrossel quebra o padding lateral do container (width:calc(100% + 40px)
+   + margin negativa) só nesse elemento, usando a largura inteira da
+   section. As setas ficam absolutas nas bordas dessa faixa quebrada: em
+   mobile o "respiro" sobrando é pequeno, então elas acabam parcialmente
+   sobrepostas na imagem (igual ao padrão já usado antes nesse cenário); a
+   partir de 768px (container com espaço de sobra e a imagem limitada a
+   480px) as mesmas setas caem naturalmente FORA da imagem, sem sobrepor. */
 .hero-carousel {
-  width: 100%;
-  max-width: 480px;
-  margin: 16px auto 0;
+  width: calc(100% + 40px);
+  max-width: 560px;
+  margin: 16px -20px 0;
 }
 .hero-carousel-row {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
 }
 .hero-carousel-track {
   position: relative;
-  flex: 0 0 240px;
-  width: 240px;
+  flex: 0 0 340px;
+  width: 340px;
   aspect-ratio: 5 / 4;
 }
 .hero-mockup-img {
@@ -203,37 +205,21 @@ ul {
   transition: opacity 0.25s ease;
 }
 
-/* Em mobile as setas são colunas normais do flexbox (não mais sobrepostas
-   por cima da imagem) — reaproveitam a cor/estilo de .carousel-arrow
-   (fundo branco, ícone/borda azul), só a posição/tamanho muda aqui. */
 .hero-carousel-row .carousel-arrow {
-  position: static;
-  transform: none;
-  flex: 0 0 32px;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
 }
 
-/* A partir de 768px: imagem volta a ser flexível (até 480px) e as setas
-   saem da coluna reservada do flexbox pra ficar de fato fora do card,
-   via position:absolute — igual ao carrossel de depoimentos. */
+/* A partir de 768px: imagem volta a ser flexível (até 480px). O wrapper já
+   quebra o padding do container nesse breakpoint também, então o "respiro"
+   entre a imagem (agora bem menor que a faixa) e as setas cresce, e elas
+   passam a ficar soltas fora do card automaticamente, sem precisar de
+   nenhum ajuste extra de posição. */
 @media (min-width: 768px) {
   .hero-carousel-track {
     flex: 1 1 auto;
     width: 100%;
-  }
-  .hero-carousel-row .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-  }
-  .hero-carousel-row .carousel-arrow--prev {
-    left: -48px;
-  }
-  .hero-carousel-row .carousel-arrow--next {
-    right: -48px;
+    max-width: 480px;
   }
 }
 
@@ -785,6 +771,24 @@ ul {
 @keyframes cta-pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
+}
+
+/* CTAs do hero e do FAQ: mesmo verde do botão de checkout (#cta-checkout,
+   que mantém seu próprio estilo/pulso inalterado), com um pulso mais sutil
+   e mais lento — só pra chamar atenção sem parecer "piscando". */
+#cta-hero,
+#cta-faq {
+  background-image: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  animation: cta-pulse-subtle 2.2s ease-in-out infinite;
+}
+#cta-hero:hover,
+#cta-faq:hover {
+  animation-play-state: paused;
+}
+
+@keyframes cta-pulse-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }
 
 .trust-badges {

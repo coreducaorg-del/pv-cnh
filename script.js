@@ -302,10 +302,10 @@
     // alto) — não repetido aqui, só os dados pros outros 2, trocados sob demanda
     var SLIDES = [
       null,
-      { avif: 'assets/hero/hero-slide-3.avif', webp: 'assets/hero/hero-slide-3.webp', png: 'assets/hero/hero-slide-3.png', alt: 'Método aprovado por mais de 1200 alunas brasileiras' },
+      { avif: 'assets/hero/hero-slide-2.avif', webp: 'assets/hero/hero-slide-2.webp', png: 'assets/hero/hero-slide-2.png', alt: 'Coreano realmente falado na Coreia por R$37' },
       { avif: 'assets/hero/mockup-produto.avif', webp: '', png: 'assets/hero/mockup-produto.png', alt: 'Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso' }
     ];
-    SLIDES[0] = { avif: 'assets/hero/hero-slide-2.avif', webp: 'assets/hero/hero-slide-2.webp', png: img.getAttribute('src'), alt: img.getAttribute('alt') };
+    SLIDES[0] = { avif: 'assets/hero/hero-slide-3.avif', webp: 'assets/hero/hero-slide-3.webp', png: img.getAttribute('src'), alt: img.getAttribute('alt') };
 
     var AUTOPLAY_MS = 3500;
     var RESUME_DELAY_MS = 5000; // após clique/swipe manual, espera antes de retomar o autoplay
