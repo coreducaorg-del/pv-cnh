@@ -271,6 +271,129 @@ ul {
   }
 }
 
+/* Telas mobile de pouca ALTURA (comum em Android, cuja variação de
+   proporção é maior que a de iPhones): reduz progressivamente a barra de
+   urgência, os espaçamentos do hero e, por fim, o carrossel de imagem —
+   nessa ordem de prioridade — pra garantir que o botão de CTA sempre caiba
+   na primeira dobra sem scroll. O botão em si só perde padding (nunca
+   texto/tamanho de fonte), mantendo alvo de toque confortável. */
+@media (max-width: 767px) and (max-height: 705px) {
+  .urgency-bar {
+    min-height: 30px;
+    padding: 4px 16px;
+  }
+  .urgency-bar p {
+    font-size: 0.75rem;
+  }
+  .urgency-bar [data-urgency-timer] {
+    padding: 2px 8px;
+  }
+  #hero.section {
+    padding-top: 8px;
+    padding-bottom: 12px;
+  }
+  .hero-carousel {
+    margin-top: 4px;
+  }
+  .carousel-dots {
+    margin-top: 8px;
+  }
+  #hero .lede {
+    margin-top: 10px;
+  }
+  #hero .checklist {
+    margin-top: 4px;
+  }
+  #hero .btn-primary {
+    margin-top: 10px;
+  }
+  #hero h1 {
+    font-size: 22px;
+    line-height: 1.1;
+  }
+  .hero-carousel-track {
+    flex: 0 0 300px;
+    width: 300px;
+  }
+}
+@media (max-width: 767px) and (max-height: 655px) {
+  .urgency-bar {
+    min-height: 26px;
+    padding: 3px 14px;
+  }
+  .urgency-bar p {
+    font-size: 0.6875rem;
+  }
+  #hero.section {
+    padding-top: 6px;
+    padding-bottom: 8px;
+  }
+  .hero-carousel {
+    margin-top: 3px;
+  }
+  .carousel-dots {
+    margin-top: 6px;
+  }
+  #hero .lede {
+    margin-top: 8px;
+  }
+  #hero .checklist {
+    margin-top: 2px;
+  }
+  #hero .btn-primary {
+    margin-top: 8px;
+    padding: 19px 30px;
+  }
+  #hero h1 {
+    font-size: 20px;
+    line-height: 1.08;
+  }
+  .hero-carousel-track {
+    flex: 0 0 250px;
+    width: 250px;
+  }
+}
+@media (max-width: 767px) and (max-height: 605px) {
+  .urgency-bar {
+    min-height: 24px;
+    padding: 2px 12px;
+  }
+  #hero.section {
+    padding-top: 4px;
+    padding-bottom: 6px;
+  }
+  .hero-carousel {
+    margin-top: 2px;
+  }
+  .carousel-dots {
+    margin-top: 4px;
+  }
+  #hero .lede {
+    margin-top: 4px;
+    font-size: 0.9375rem;
+    line-height: 1.35;
+  }
+  #hero .checklist {
+    margin-top: 2px;
+  }
+  #hero .checklist li {
+    font-size: 0.8125rem;
+    padding: 1px 0 1px 24px;
+  }
+  #hero .btn-primary {
+    margin-top: 6px;
+    padding: 16px 24px;
+  }
+  #hero h1 {
+    font-size: 18px;
+    line-height: 1.05;
+  }
+  .hero-carousel-track {
+    flex: 0 0 200px;
+    width: 200px;
+  }
+}
+
 /* ---------- Botões ---------- */
 .btn-primary {
   display: inline-block;
