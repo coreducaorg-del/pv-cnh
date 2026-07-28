@@ -597,36 +597,12 @@
   })();
 
   // ==========================================================================
-  // CTAs que rolam suavemente até a seção de preço (em vez de ir direto pro
-  // checkout). Usa o Lenis (já usado na página) quando disponível, pra manter
-  // a mesma suavidade do resto do scroll; cai pro scrollIntoView nativo como
-  // fallback caso o Lenis não tenha carregado por algum motivo.
+  // Botões de CTA (#cta-hero, #cta-faq, #cta-checkout): os 3 levam direto
+  // pro checkout da Hubla, com a mesma lógica robusta de abertura de aba.
   //
-  // Vinculado por ID explícito (#cta-hero, #cta-faq) — de propósito, NÃO por
-  // classe/atributo compartilhado — pra nunca correr o risco de também
-  // capturar o botão real de checkout (#cta-checkout), que precisa manter o
-  // comportamento padrão do link (href pra Hubla, target="_blank").
-  // ==========================================================================
-  ['cta-hero', 'cta-faq'].forEach(function (id) {
-    var link = document.getElementById(id);
-    if (!link) return;
-    link.addEventListener('click', function (event) {
-      var target = document.getElementById('preco');
-      if (!target) return;
-      event.preventDefault();
-      if (window.lenis && typeof window.lenis.scrollTo === 'function') {
-        window.lenis.scrollTo(target, { offset: 0 });
-      } else {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  // ==========================================================================
-  // Botão de checkout (#cta-checkout): no Safari (principalmente iOS), a
-  // troca imediata de aba (target="_blank") às vezes corta a execução do
-  // script de tracking (Utmify/InitiateCheckout) antes dele terminar de
-  // disparar, perdendo o evento.
+  // No Safari (principalmente iOS), a troca imediata de aba (target="_blank")
+  // às vezes corta a execução do script de tracking (Utmify/InitiateCheckout)
+  // antes dele terminar de disparar, perdendo o evento.
   //
   // Abrir a nova aba com window.open() dentro de um setTimeout NÃO funciona
   // como correção — o Safari exige que window.open seja chamado de forma
@@ -645,16 +621,19 @@
   //   ignorado, pra nunca abrir duas abas/referências conflitantes.
   // - Delay reduzido pra 90ms (ainda dá folga pro tracking, mas encurta a
   //   janela em que a aba pode ser fechada/bloqueada nesse meio-tempo).
+  //
+  // Cada botão tem seu próprio debounce independente (navigationPending por
+  // instância), pra clicar em um não travar os outros dois.
   // ==========================================================================
-  (function initCheckoutClickDelay() {
-    var checkoutLink = document.getElementById('cta-checkout');
-    if (!checkoutLink) return;
+  ['cta-hero', 'cta-faq', 'cta-checkout'].forEach(function (id) {
+    var link = document.getElementById(id);
+    if (!link) return;
 
     var CHECKOUT_DELAY_MS = 90;
     var navigationPending = false;
 
-    checkoutLink.addEventListener('click', function (event) {
-      var href = checkoutLink.href;
+    link.addEventListener('click', function (event) {
+      var href = link.href;
       if (!href) return;
       event.preventDefault();
 
@@ -687,5 +666,5 @@
         navigationPending = false;
       }, CHECKOUT_DELAY_MS);
     });
-  })();
+  });
 })();
