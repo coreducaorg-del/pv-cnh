@@ -299,10 +299,10 @@
     if (!img) return;
 
     // slide 0 já é o que está no HTML estático (carregado eager/fetchpriority
-    // alto) — não repetido aqui, só os dados pros outros 2, trocados sob demanda
+    // alto) — não repetido aqui, só o dado do slide 2, trocado sob demanda
+    // (só é buscado quando o carrossel avança até ele, efetivamente lazy)
     var SLIDES = [
       null,
-      { avif: 'assets/hero/hero-slide-2.avif', webp: 'assets/hero/hero-slide-2.webp', png: 'assets/hero/hero-slide-2.png', alt: 'Coreano realmente falado na Coreia por R$37' },
       { avif: 'assets/hero/mockup-produto.avif', webp: '', png: 'assets/hero/mockup-produto.png', alt: 'Mockup do Coreano na Hora — livro, notebook e tablet com o conteúdo do curso' }
     ];
     SLIDES[0] = { avif: 'assets/hero/hero-slide-3.avif', webp: 'assets/hero/hero-slide-3.webp', png: img.getAttribute('src'), alt: img.getAttribute('alt') };
